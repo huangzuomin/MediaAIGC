@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>温州新闻网·智媒变革中心 | AI转型战略伙伴</title>
+    <meta name="description" content="温州新闻网智媒变革中心，专业的媒体AI转型战略咨询服务，助力媒体机构实现智能化转型升级">
+    <meta name="keywords" content="媒体AI转型,智媒变革,AI咨询,媒体数字化,温州新闻网">
+    <meta property="og:title" content="温州新闻网·智媒变革中心 | AI转型战略伙伴">
+    <meta property="og:description" content="源自媒体、洞悉未来，致力于成为您最信赖的AI转型领航伙伴">
+    <meta name="twitter:title" content="温州新闻网·智媒变革中心 | AI转型战略伙伴">
+    <meta name="twitter:description" content="源自媒体、洞悉未来，致力于成为您最信赖的AI转型领航伙伴">
+
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+
+    <style type="text/tailwindcss">
+        @layer theme {
+        :root {
+            --primary-color: #003366;
+            --accent-color: #D4AF37;
+            --success-color: #00C292;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --bg-light: #f8fafc;
+            --border-light: #e2e8f0;
+        }
+    }
+
+    @layer base {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+    }
+
+    @layer components {
+        .btn-primary {
+            @apply bg-[var(--primary-color)] text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-opacity-90 hover:shadow-lg hover:scale-105 active:scale-95;
+        }
+        
+        .btn-secondary {
+            @apply bg-[var(--primary-color)] text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-opacity-90 hover:shadow-lg hover:scale-105 active:scale-95;
+        }
+        
+        .btn-gold {
+            @apply bg-[var(--accent-color)] text-[var(--primary-color)] px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-opacity-90 hover:shadow-lg hover:scale-105 active:scale-95;
+        }
+        
+        .btn-outline {
+            @apply border-2 border-[var(--primary-color)] text-[var(--primary-color)] px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-[var(--primary-color)] hover:text-white hover:scale-105 active:scale-95;
+        }
+        
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold text-[var(--primary-color)] mb-6;
+        }
+        
+        .card-hover {
+            @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-2;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #004080 100%);
+        }
+        
+        .bg-visual-break {
+            background-color: #F5F7FA;
+        }
+        
+        .pill-tag {
+            @apply px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm border border-gray-200;
+        }
+        
+        .stage-card {
+            @apply transition-all duration-500 hover:shadow-xl hover:-translate-y-1;
+        }
+        
+        .stage-card:hover .stage-accent {
+            @apply border-l-4 border-[var(--accent-color)];
+        }
+        
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes expandFromCenter {
+            from {
+                transform: scaleX(0);
+                opacity: 0;
+            }
+            to {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes loadingProgress {
+            from { 
+                width: 0%; 
+            }
+            to { 
+                width: 100%; 
+            }
+        }
+        
+        .loading-progress {
+            animation: loadingProgress 1.5s ease-out forwards;
+        }
+        
+
+    }
+
+    @layer utilities {
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    }
+    </style>
+</head>
+
+<body class="smooth-scroll">
+    <div id="root"></div>
+
+    <script type="text/babel" src="components/PageLoader.js"></script>
+    <script type="text/babel" src="components/ScrollProgress.js"></script>
+    <script type="text/babel" src="components/Navigation.js"></script>
+    <script type="text/babel" src="components/HeroSection.js"></script>
+    <script type="text/babel" src="components/SectionDivider.js"></script>
+    <script type="text/babel" src="components/FrameworkSection.js"></script>
+    <script type="text/babel" src="components/ServiceMatrix.js"></script>
+    <script type="text/babel" src="components/ServiceDetails.js"></script>
+    <script type="text/babel" src="components/AnimatedNumber.js"></script>
+    <script type="text/babel" src="components/TeamSection.js"></script>
+    <script type="text/babel" src="components/CollaborationSection.js"></script>
+    <script type="text/babel" src="components/WorkshopDetailPage.js"></script>
+    <script type="text/babel" src="components/ProjectDetailPage.js"></script>
+    <script type="text/babel" src="components/PartnerDetailPage.js"></script>
+    <script type="text/babel" src="components/StarterPackDetailPage.js"></script>
+    <script type="text/babel" src="components/AIMaturityAssessment.js"></script>
+    <script type="text/babel" src="components/ServiceRouter.js"></script>
+    <script type="text/babel" src="components/InsightsSection.js"></script>
+    <script type="text/babel" src="components/ContactSection.js"></script>
+    <script type="text/babel" src="components/Footer.js"></script>
+    <script type="text/babel" src="components/BackToTop.js"></script>
+    <script type="text/babel" src="app.js"></script>
+</body>
+
+</html>
