@@ -10,7 +10,7 @@ function HeroSection() {
 
     return (
       <section 
-        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden py-16 sm:py-0"
         data-name="hero-section" 
         data-file="components/HeroSection.js"
         style={{
@@ -47,59 +47,61 @@ function HeroSection() {
         </div>
 
         <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-shadow">
+          <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mb-4 sm:mb-6 text-shadow">
             智媒变革的领航伙伴
           </h1>
           
-          <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto leading-relaxed">
-            我们认为，AI不是工具的叠加，而是驱动媒体重塑未来的核心战略。<br />
+          <p className="text-base sm:text-lg md:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto leading-relaxed">
+            我们认为，AI不是工具的叠加，而是驱动媒体重塑未来的核心战略。
+            <span className="hidden sm:inline"><br /></span>
+            <span className="sm:hidden"> </span>
             源自一线，我们比任何人都懂您的挑战。
           </p>
 
           {/* 核心优势 */}
-          <div className="grid md:grid-cols-3 gap-8 mb-12 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 mb-8 sm:mb-12 max-w-4xl mx-auto">
             <div className="text-center group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-white bg-opacity-20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-opacity-30 group-hover:rotate-3">
-                <svg className="w-8 h-8 text-white transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 bg-white bg-opacity-20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-opacity-30 group-hover:rotate-3">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold mb-2">源自媒体的深刻洞察</h3>
-              <p className="text-gray-200">实践者，而非旁观者</p>
+              <h3 className="text-sm sm:text-lg font-semibold mb-1 sm:mb-2">源自媒体的深刻洞察</h3>
+              <p className="text-xs sm:text-base text-gray-200">实践者，而非旁观者</p>
             </div>
             
             <div className="text-center group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-white bg-opacity-20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-opacity-30 group-hover:rotate-3">
-                <svg className="w-8 h-8 text-white transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 bg-white bg-opacity-20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-opacity-30 group-hover:rotate-3">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold mb-2">经过验证的转型方法论</h3>
-              <p className="text-gray-200">战略，而非空谈</p>
+              <h3 className="text-sm sm:text-lg font-semibold mb-1 sm:mb-2">经过验证的转型方法论</h3>
+              <p className="text-xs sm:text-base text-gray-200">战略，而非空谈</p>
             </div>
             
             <div className="text-center group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-white bg-opacity-20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-opacity-30 group-hover:rotate-3">
-                <svg className="w-8 h-8 text-white transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 bg-white bg-opacity-20 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:bg-opacity-30 group-hover:rotate-3">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold mb-2">长期主义的伙伴关系</h3>
-              <p className="text-gray-200">共创，而非交付</p>
+              <h3 className="text-sm sm:text-lg font-semibold mb-1 sm:mb-2">长期主义的伙伴关系</h3>
+              <p className="text-xs sm:text-base text-gray-200">共创，而非交付</p>
             </div>
           </div>
 
           {/* CTA按钮 */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <button 
               onClick={scrollToFramework}
-              className="btn-outline bg-white bg-opacity-10 border-white text-white hover:bg-white hover:text-[var(--primary-color)]"
+              className="px-6 py-2.5 sm:px-8 sm:py-3 border-2 border-white text-white rounded-lg font-medium transition-all duration-300 hover:bg-white hover:text-[var(--primary-color)] text-sm sm:text-base"
             >
               了解MAML方法论
             </button>
             <button 
               onClick={scrollToContact}
-              className="bg-[var(--accent-color)] text-[var(--primary-color)] px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-opacity-90"
+              className="bg-[var(--accent-color)] text-[var(--primary-color)] px-6 py-2.5 sm:px-8 sm:py-3 rounded-lg font-medium transition-all duration-300 hover:bg-opacity-90 text-sm sm:text-base"
             >
               与我们的首席顾问对话
             </button>
