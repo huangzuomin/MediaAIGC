@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础功能测试</title>
+    
+    <!-- React and Dependencies -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+            <div style="text-align: center;">
+                <div style="width: 40px; height: 40px; border: 4px solid #3b82f6; border-top: 4px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                <p style="color: #3b82f6; font-weight: 500;">正在加载...</p>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    
+    <script type="text/babel">
+        function BasicTest() {
+            const [status, setStatus] = React.useState('初始化中...');
+            const [tests, setTests] = React.useState([]);
+            
+            React.useEffect(() => {
+                console.log('BasicTest 组件开始初始化');
+                
+                const testResults = [];
+                
+                // 测试 React
+                try {
+                    testResults.push({
+                        name: 'React 加载',
+                        status: 'success',
+                        message: `React ${React.version} 加载成功`
+                    });
+                } catch (e) {
+                    testResults.push({
+                        name: 'React 加载',
+                        status: 'error',
+                        message: `React 加载失败: ${e.message}`
+                    });
+                }
+                
+                // 测试 ReactDOM
+                try {
+                    testResults.push({
+                        name: 'ReactDOM 加载',
+                        status: 'success',
+                        message: 'ReactDOM 加载成功'
+                    });
+                } catch (e) {
+                    testResults.push({
+                        name: 'ReactDOM 加载',
+                        status: 'error',
+                        message: `ReactDOM 加载失败: ${e.message}`
+                    });
+                }
+                
+                // 测试 Babel
+                try {
+                    testResults.push({
+                        name: 'Babel 转换',
+                        status: 'success',
+                        message: 'Babel JSX 转换正常'
+                    });
+                } catch (e) {
+                    testResults.push({
+                        name: 'Babel 转换',
+                        status: 'error',
+                        message: `Babel 转换失败: ${e.message}`
+                    });
+                }
+                
+                // 测试 Tailwind
+                try {
+                    const testElement = document.createElement('div');
+                    testElement.className = 'bg-blue-500';
+                    document.body.appendChild(testElement);
+                    const styles = window.getComputedStyle(testElement);
+                    document.body.removeChild(testElement);
+                    
+                    if (styles.backgroundColor) {
+                        testResults.push({
+                            name: 'Tailwind CSS',
+                            status: 'success',
+                            message: 'Tailwind CSS 样式正常'
+                        });
+                    } else {
+                        testResults.push({
+                            name: 'Tailwind CSS',
+                            status: 'warning',
+                            message: 'Tailwind CSS 可能未完全加载'
+                        });
+                    }
+                } catch (e) {
+                    testResults.push({
+                        name: 'Tailwind CSS',
+                        status: 'error',
+                        message: `Tailwind CSS 测试失败: ${e.message}`
+                    });
+                }
+                
+                // 测试本地存储
+                try {
+                    localStorage.setItem('test', 'value');
+                    const value = localStorage.getItem('test');
+                    localStorage.removeItem('test');
+                    
+                    testResults.push({
+                        name: '本地存储',
+                        status: 'success',
+                        message: '本地存储功能正常'
+                    });
+                } catch (e) {
+                    testResults.push({
+                        name: '本地存储',
+                        status: 'warning',
+                        message: `本地存储受限: ${e.message}`
+                    });
+                }
+                
+                setTests(testResults);
+                setStatus('测试完成');
+                
+                console.log('BasicTest 初始化完成', testResults);
+            }, []);
+            
+            const getStatusColor = (status) => {
+                switch (status) {
+                    case 'success': return 'text-green-600 bg-green-100';
+                    case 'warning': return 'text-yellow-600 bg-yellow-100';
+                    case 'error': return 'text-red-600 bg-red-100';
+                    default: return 'text-gray-600 bg-gray-100';
+                }
+            };
+            
+            const getStatusIcon = (status) => {
+                switch (status) {
+                    case 'success': return '✓';
+                    case 'warning': return '⚠';
+                    case 'error': return '✗';
+                    default: return '?';
+                }
+            };
+            
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                    <div className="max-w-2xl mx-auto">
+                        <div className="bg-white rounded-2xl shadow-xl p-8">
+                            <div className="text-center mb-8">
+                                <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                                    基础功能测试
+                                </h1>
+                                <p className="text-gray-600">
+                                    检查 AI 成熟度自测工具的基础依赖
+                                </p>
+                                <div className="mt-4">
+                                    <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        {status}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                {tests.map((test, index) => (
+                                    <div key={index} className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg">
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getStatusColor(test.status)}`}>
+                                            {getStatusIcon(test.status)}
+                                        </div>
+                                        <div className="flex-1">
+                                            <h3 className="font-semibold text-gray-800">{test.name}</h3>
+                                            <p className="text-sm text-gray-600 mt-1">{test.message}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                                <button 
+                                    onClick={() => window.open('index.html', '_self')}
+                                    className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                                >
+                                    测试主页面
+                                </button>
+                                
+                                <button 
+                                    onClick={() => window.open('index-working.html', '_self')}
+                                    className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                                >
+                                    测试工作版本
+                                </button>
+                                
+                                <button 
+                                    onClick={() => window.location.reload()}
+                                    className="flex-1 bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors font-medium"
+                                >
+                                    重新测试
+                                </button>
+                            </div>
+                            
+                            <div className="mt-6 pt-6 border-t border-gray-200">
+                                <h3 className="font-semibold text-gray-800 mb-3">系统信息</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <span className="font-medium text-gray-600">浏览器:</span>
+                                        <span className="ml-2 text-gray-800">{navigator.userAgent.split(' ')[0]}</span>
+                                    </div>
+                                    <div>
+                                        <span className="font-medium text-gray-600">时间:</span>
+                                        <span className="ml-2 text-gray-800">{new Date().toLocaleString()}</span>
+                                    </div>
+                                    <div>
+                                        <span className="font-medium text-gray-600">屏幕:</span>
+                                        <span className="ml-2 text-gray-800">{window.innerWidth}x{window.innerHeight}</span>
+                                    </div>
+                                    <div>
+                                        <span className="font-medium text-gray-600">设备:</span>
+                                        <span className="ml-2 text-gray-800">
+                                            {window.innerWidth < 768 ? '移动设备' : window.innerWidth < 1024 ? '平板' : '桌面'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        
+        // 渲染应用
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM 已加载，开始渲染 BasicTest');
+            const root = document.getElementById('root');
+            if (root) {
+                try {
+                    if (ReactDOM.createRoot) {
+                        const reactRoot = ReactDOM.createRoot(root);
+                        reactRoot.render(React.createElement(BasicTest));
+                    } else {
+                        ReactDOM.render(React.createElement(BasicTest), root);
+                    }
+                    console.log('BasicTest 渲染完成');
+                } catch (e) {
+                    console.error('渲染失败:', e);
+                    root.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+                            <div style="text-align: center; max-width: 400px; padding: 20px;">
+                                <h2 style="color: #dc2626; margin-bottom: 10px;">渲染失败</h2>
+                                <p style="color: #6b7280; margin-bottom: 20px;">React 应用渲染时出现错误：${e.message}</p>
+                                <button onclick="window.location.reload()" style="background: #3b82f6; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
+                                    刷新页面
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                console.error('找不到 root 元素');
+            }
+        });
+        
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            console.error('页面错误:', e.message, e.filename, e.lineno);
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('未处理的 Promise 错误:', e.reason);
+        });
+    </script>
+</body>
+</html>

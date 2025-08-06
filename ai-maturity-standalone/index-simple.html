@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媒体AI成熟度5分钟自测 | 免费评估您的AI转型水平</title>
+    <meta name="description" content="专业的媒体AI成熟度自测工具，5分钟快速评估您机构的AI应用水平，获得个性化转型建议和专家指导">
+    <meta name="keywords" content="AI成熟度测试,媒体AI转型,AI自测,智媒变革,AI评估工具">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- React and Dependencies -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- CSS Variables -->
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #FF6B35;
+            --text-color: #333333;
+            --bg-color: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+
+        .container-responsive {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .container-responsive {
+                padding: 0 2rem;
+            }
+        }
+
+        .mobile-slide-in {
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .mobile-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-color);
+        }
+
+        .mobile-question-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+    </style>
+</head>
+
+<body class="smooth-scroll">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-[var(--primary-color)] mx-auto mb-4"></div>
+            <h2 class="text-xl font-semibold text-[var(--primary-color)] mb-2">正在加载AI成熟度自测...</h2>
+            <p class="text-gray-600">请稍候，正在为您准备专业的评估工具</p>
+        </div>
+    </div>
+
+    <!-- Error Fallback -->
+    <div id="error-fallback" class="hidden fixed inset-0 bg-white z-40 flex items-center justify-center">
+        <div class="text-center max-w-md mx-auto p-8">
+            <div class="text-red-500 mb-4">
+                <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">加载出现问题</h2>
+            <p class="text-gray-600 mb-4">抱歉，应用加载时遇到了问题。请刷新页面重试。</p>
+            <button onclick="window.location.reload()" class="bg-[var(--primary-color)] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                刷新页面
+            </button>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="root"></div>
+
+    <!-- Essential Scripts Only -->
+    <script type="text/babel" src="utils/storage.js"></script>
+    <script type="text/babel" src="utils/assessmentCalculator.js"></script>
+    <script type="text/babel" src="components/StandaloneAssessment.js"></script>
+    <script type="text/babel" src="components/SEOHead.js"></script>
+    <script type="text/babel" src="components/StandaloneErrorBoundary.js"></script>
+
+    <!-- Simplified App Script -->
+    <script type="text/babel">
+        // Simplified Standalone App
+        function SimpleStandaloneApp() {
+            const [isLoading, setIsLoading] = React.useState(true);
+            const [error, setError] = React.useState(null);
+
+            React.useEffect(() => {
+                initializeApp();
+            }, []);
+
+            const initializeApp = async () => {
+                try {
+                    console.log('Initializing simple standalone app...');
+
+                    // Hide loading screen after a short delay
+                    setTimeout(() => {
+                        setIsLoading(false);
+                        hideLoadingScreen();
+                    }, 1000);
+
+                } catch (err) {
+                    console.error('Error initializing app:', err);
+                    setError(err);
+                    setIsLoading(false);
+                    hideLoadingScreen();
+                    showErrorFallback();
+                }
+            };
+
+            const hideLoadingScreen = () => {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 300);
+                }
+            };
+
+            const showErrorFallback = () => {
+                const errorFallback = document.getElementById('error-fallback');
+                if (errorFallback) {
+                    errorFallback.classList.remove('hidden');
+                }
+            };
+
+            if (error) {
+                return React.createElement(StandaloneErrorBoundary, { error });
+            }
+
+            if (isLoading) {
+                return null; // Loading screen is handled by HTML
+            }
+
+            return React.createElement(StandaloneAssessment);
+        }
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(SimpleStandaloneApp));
+    </script>
+</body>
+
+</html>

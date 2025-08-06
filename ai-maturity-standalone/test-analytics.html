@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Testing - AI Maturity Assessment</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .test-section {
+            margin-bottom: 30px;
+        }
+        .test-section h3 {
+            color: #666;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .test-button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .test-button:hover {
+            background: #005a87;
+        }
+        .test-button.secondary {
+            background: #6c757d;
+        }
+        .test-button.success {
+            background: #28a745;
+        }
+        .test-button.danger {
+            background: #dc3545;
+        }
+        .test-results {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background-color: #28a745; }
+        .status-error { background-color: #dc3545; }
+        .status-warning { background-color: #ffc107; }
+        .status-info { background-color: #17a2b8; }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .metric-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007cba;
+        }
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            🔍 Analytics Testing Dashboard
+        </div>
+        
+        <div class="test-section">
+            <h3>System Status</h3>
+            <div id="system-status">
+                <div id="ga4-status">
+                    <span class="status-indicator status-info"></span>
+                    Google Analytics 4: <span id="ga4-text">Checking...</span>
+                </div>
+                <div id="analytics-status">
+                    <span class="status-indicator status-info"></span>
+                    Analytics Object: <span id="analytics-text">Checking...</span>
+                </div>
+                <div id="storage-status">
+                    <span class="status-indicator status-info"></span>
+                    Local Storage: <span id="storage-text">Checking...</span>
+                </div>
+                <div id="config-status">
+                    <span class="status-indicator status-info"></span>
+                    Configuration: <span id="config-text">Checking...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>Event Tracking Tests</h3>
+            <button class="test-button" onclick="testPageView()">Test Page View</button>
+            <button class="test-button" onclick="testAssessmentEvent()">Test Assessment Event</button>
+            <button class="test-button" onclick="testConversionEvent()">Test Conversion</button>
+            <button class="test-button" onclick="testCustomEvent()">Test Custom Event</button>
+            <button class="test-button" onclick="testFunnelStep()">Test Funnel Step</button>
+            <div id="event-results" class="test-results" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Data Storage Tests</h3>
+            <button class="test-button" onclick="testDataStorage()">Test Storage Operations</button>
+            <button class="test-button" onclick="testOfflineEvents()">Test Offline Events</button>
+            <button class="test-button" onclick="testDataRetrieval()">Test Data Retrieval</button>
+            <button class="test-button secondary" onclick="clearTestData()">Clear Test Data</button>
+            <div id="storage-results" class="test-results" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Funnel Analysis Tests</h3>
+            <button class="test-button" onclick="simulateUserJourney()">Simulate User Journey</button>
+            <button class="test-button" onclick="testFunnelMetrics()">Test Funnel Metrics</button>
+            <button class="test-button" onclick="generateFunnelReport()">Generate Funnel Report</button>
+            <div id="funnel-results" class="test-results" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Performance Metrics</h3>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" id="total-events">0</div>
+                    <div class="metric-label">Total Events</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="offline-events">0</div>
+                    <div class="metric-label">Offline Events</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="conversions">0</div>
+                    <div class="metric-label">Conversions</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="storage-usage">0%</div>
+                    <div class="metric-label">Storage Usage</div>
+                </div>
+            </div>
+            <button class="test-button success" onclick="refreshMetrics()">Refresh Metrics</button>
+        </div>
+
+        <div class="test-section">
+            <h3>Validation & Reports</h3>
+            <button class="test-button" onclick="runFullValidation()">Run Full Validation</button>
+            <button class="test-button" onclick="runQuickValidation()">Quick Validation</button>
+            <button class="test-button secondary" onclick="exportAnalyticsData()">Export Data</button>
+            <button class="test-button secondary" onclick="exportValidationReport()">Export Report</button>
+            <div id="validation-results" class="test-results" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Load dependencies -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            debug_mode: true,
+            send_page_view: false // We'll send manually for testing
+        });
+    </script>
+
+    <!-- Load analytics components -->
+    <script src="utils/storage.js"></script>
+    <script src="utils/analytics.js"></script>
+    <script src="utils/analyticsConfig.js"></script>
+    <script src="utils/analyticsValidator.js"></script>
+
+    <script>
+        // Initialize testing environment
+        let testResults = [];
+        
+        // Check system status on load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSystemStatus();
+            refreshMetrics();
+            
+            // Auto-refresh metrics every 30 seconds
+            setInterval(refreshMetrics, 30000);
+        });
+
+        // Check system status
+        function checkSystemStatus() {
+            // Check GA4
+            const ga4Status = typeof gtag !== 'undefined';
+            updateStatus('ga4', ga4Status, ga4Status ? 'Loaded' : 'Not Loaded');
+
+            // Check Analytics object
+            const analyticsStatus = typeof Analytics !== 'undefined';
+            updateStatus('analytics', analyticsStatus, analyticsStatus ? 'Available' : 'Not Available');
+
+            // Check Storage
+            const storageStatus = typeof Storage !== 'undefined' && Storage.isAvailable();
+            updateStatus('storage', storageStatus, storageStatus ? 'Available' : 'Not Available');
+
+            // Check Configuration
+            const configStatus = typeof AnalyticsConfig !== 'undefined';
+            updateStatus('config', configStatus, configStatus ? 'Loaded' : 'Not Loaded');
+        }
+
+        function updateStatus(type, success, text) {
+            const indicator = document.querySelector(`#${type}-status .status-indicator`);
+            const textElement = document.getElementById(`${type}-text`);
+            
+            indicator.className = `status-indicator ${success ? 'status-success' : 'status-error'}`;
+            textElement.textContent = text;
+        }
+
+        // Event tracking tests
+        function testPageView() {
+            if (typeof Analytics === 'undefined') {
+                showResults('event-results', 'Analytics object not available');
+                return;
+            }
+
+            Analytics.trackPageView('Test Page View', {
+                test: true,
+                timestamp: new Date().toISOString()
+            });
+
+            showResults('event-results', 'Page view event sent successfully');
+        }
+
+        function testAssessmentEvent() {
+            if (typeof Analytics === 'undefined') {
+                showResults('event-results', 'Analytics object not available');
+                return;
+            }
+
+            Analytics.trackAssessmentEvent('test_assessment_event', {
+                question_id: 'test_q1',
+                question_number: 1,
+                answer_value: 3,
+                test: true
+            });
+
+            showResults('event-results', 'Assessment event sent successfully');
+        }
+
+        function testConversionEvent() {
+            if (typeof Analytics === 'undefined') {
+                showResults('event-results', 'Analytics object not available');
+                return;
+            }
+
+            Analytics.trackConversion('test_conversion', {
+                value: 100,
+                test: true
+            });
+
+            showResults('event-results', 'Conversion event sent successfully');
+        }
+
+        function testCustomEvent() {
+            if (typeof Analytics === 'undefined') {
+                showResults('event-results', 'Analytics object not available');
+                return;
+            }
+
+            Analytics.trackCustomEvent('test_custom_event', {
+                custom_parameter: 'test_value',
+                test: true,
+                timestamp: Date.now()
+            });
+
+            showResults('event-results', 'Custom event sent successfully');
+        }
+
+        function testFunnelStep() {
+            if (typeof Analytics === 'undefined') {
+                showResults('event-results', 'Analytics object not available');
+                return;
+            }
+
+            Analytics.trackFunnelStep('test_funnel_step', {
+                step_data: 'test_data',
+                test: true
+            });
+
+            showResults('event-results', 'Funnel step tracked successfully');
+        }
+
+        // Data storage tests
+        function testDataStorage() {
+            if (typeof Storage === 'undefined') {
+                showResults('storage-results', 'Storage object not available');
+                return;
+            }
+
+            const testData = {
+                test: true,
+                timestamp: Date.now(),
+                data: 'test_analytics_data'
+            };
+
+            Storage.saveAnalyticsData(testData);
+            const retrievedData = Storage.getAnalyticsData();
+            
+            const success = retrievedData.some(item => item.test === true);
+            showResults('storage-results', success ? 
+                'Data storage test passed' : 'Data storage test failed');
+        }
+
+        function testOfflineEvents() {
+            if (typeof Analytics === 'undefined') {
+                showResults('storage-results', 'Analytics object not available');
+                return;
+            }
+
+            // Simulate offline event
+            Analytics.storeOfflineEvent('test', 'offline_test_event', {
+                test: true,
+                offline: true,
+                timestamp: Date.now()
+            });
+
+            const offlineEvents = Storage.getUnsyncedAnalyticsData();
+            showResults('storage-results', 
+                `Offline events test: ${offlineEvents.length} events stored`);
+        }
+
+        function testDataRetrieval() {
+            if (typeof Storage === 'undefined') {
+                showResults('storage-results', 'Storage object not available');
+                return;
+            }
+
+            const insights = Storage.getAnalyticsInsights();
+            showResults('storage-results', 
+                `Analytics insights retrieved: ${JSON.stringify(insights, null, 2)}`);
+        }
+
+        function clearTestData() {
+            if (typeof Storage === 'undefined') {
+                showResults('storage-results', 'Storage object not available');
+                return;
+            }
+
+            // Clear only test data, not all data
+            const analyticsData = Storage.getAnalyticsData();
+            const filteredData = analyticsData.filter(item => !item.test);
+            Storage.setItem(Storage.KEYS.ANALYTICS_DATA, filteredData);
+
+            showResults('storage-results', 'Test data cleared successfully');
+        }
+
+        // Funnel analysis tests
+        function simulateUserJourney() {
+            if (typeof Analytics === 'undefined') {
+                showResults('funnel-results', 'Analytics object not available');
+                return;
+            }
+
+            const journey = [
+                'page_view',
+                'assessment_start',
+                'question_1_answered',
+                'question_5_answered',
+                'question_10_answered',
+                'assessment_completed',
+                'result_viewed',
+                'conversion'
+            ];
+
+            journey.forEach((step, index) => {
+                setTimeout(() => {
+                    Analytics.trackFunnelStep(step, {
+                        simulation: true,
+                        step_number: index + 1
+                    });
+                }, index * 500);
+            });
+
+            showResults('funnel-results', 'User journey simulation started');
+        }
+
+        function testFunnelMetrics() {
+            if (typeof Analytics === 'undefined') {
+                showResults('funnel-results', 'Analytics object not available');
+                return;
+            }
+
+            const metrics = Analytics.calculateFunnelMetrics();
+            showResults('funnel-results', 
+                `Funnel metrics: ${JSON.stringify(metrics, null, 2)}`);
+        }
+
+        function generateFunnelReport() {
+            if (typeof Analytics === 'undefined') {
+                showResults('funnel-results', 'Analytics object not available');
+                return;
+            }
+
+            const report = Analytics.getAnalyticsReport();
+            showResults('funnel-results', 
+                `Analytics report: ${JSON.stringify(report, null, 2)}`);
+        }
+
+        // Refresh metrics
+        function refreshMetrics() {
+            if (typeof Storage !== 'undefined') {
+                const analyticsData = Storage.getAnalyticsData();
+                const offlineEvents = Storage.getUnsyncedAnalyticsData();
+                const conversions = Storage.getConversionData();
+                const storageInfo = Storage.getStorageInfo();
+
+                document.getElementById('total-events').textContent = analyticsData.length;
+                document.getElementById('offline-events').textContent = offlineEvents.length;
+                document.getElementById('conversions').textContent = conversions.length;
+                document.getElementById('storage-usage').textContent = 
+                    storageInfo.percentage ? storageInfo.percentage.toFixed(1) + '%' : '0%';
+            }
+        }
+
+        // Validation tests
+        function runFullValidation() {
+            if (typeof AnalyticsValidator === 'undefined') {
+                showResults('validation-results', 'AnalyticsValidator not available');
+                return;
+            }
+
+            showResults('validation-results', 'Running full validation...');
+            
+            AnalyticsValidator.runAllValidations().then(report => {
+                showResults('validation-results', 
+                    `Validation Report:\n${JSON.stringify(report, null, 2)}`);
+            });
+        }
+
+        function runQuickValidation() {
+            if (typeof AnalyticsValidator === 'undefined') {
+                showResults('validation-results', 'AnalyticsValidator not available');
+                return;
+            }
+
+            const result = AnalyticsValidator.runQuickValidation();
+            showResults('validation-results', 
+                `Quick Validation: ${JSON.stringify(result, null, 2)}`);
+        }
+
+        function exportAnalyticsData() {
+            if (typeof Analytics === 'undefined') {
+                showResults('validation-results', 'Analytics object not available');
+                return;
+            }
+
+            const exportData = Analytics.exportAnalyticsData();
+            downloadFile('analytics-data.json', exportData);
+            showResults('validation-results', 'Analytics data exported successfully');
+        }
+
+        function exportValidationReport() {
+            if (typeof AnalyticsValidator === 'undefined') {
+                showResults('validation-results', 'AnalyticsValidator not available');
+                return;
+            }
+
+            const reportData = AnalyticsValidator.exportValidationReport();
+            downloadFile('validation-report.json', reportData);
+            showResults('validation-results', 'Validation report exported successfully');
+        }
+
+        // Utility functions
+        function showResults(elementId, content) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.textContent = content;
+        }
+
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

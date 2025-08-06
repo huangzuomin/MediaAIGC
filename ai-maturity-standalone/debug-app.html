@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调试版本 - AI成熟度自测</title>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #FF6B35;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // 简化的存储系统
+        const SimpleStorage = {
+            getPreferences: function() {
+                try {
+                    const data = localStorage.getItem('ai-maturity-preferences');
+                    return data ? JSON.parse(data) : { dataStorage: true };
+                } catch (e) {
+                    return { dataStorage: true };
+                }
+            },
+            
+            saveSession: function(data) {
+                try {
+                    localStorage.setItem('ai-maturity-session', JSON.stringify(data));
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            },
+            
+            getSession: function() {
+                try {
+                    const data = localStorage.getItem('ai-maturity-session');
+                    return data ? JSON.parse(data) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+        };
+
+        // 简化的评估组件
+        function SimpleAssessment() {
+            const [currentQuestion, setCurrentQuestion] = React.useState(0);
+            const [answers, setAnswers] = React.useState({});
+            const [privacyChecked, setPrivacyChecked] = React.useState(false);
+            const [hasValidConsent, setHasValidConsent] = React.useState(true);
+
+            const questions = [
+                {
+                    id: 'tech_awareness',
+                    question: '您的机构目前对AI技术的认知和应用情况是？',
+                    options: [
+                        { value: 1, text: '仅在讨论概念，关注新闻报道' },
+                        { value: 2, text: '员工自发使用ChatGPT等公网工具' },
+                        { value: 3, text: '采购了专门的AI工具用于特定业务' },
+                        { value: 4, text: '建设了统一的AI中台或平台' },
+                        { value: 5, text: 'AI能力可灵活编排并对外提供服务' }
+                    ]
+                },
+                {
+                    id: 'data_management',
+                    question: '您的机构在数据管理和资产化方面的现状是？',
+                    options: [
+                        { value: 1, text: '数据孤岛严重，资产未被有效管理' },
+                        { value: 2, text: '个人处理少量数据，缺乏统一管理' },
+                        { value: 3, text: '特定业务线的数据已打通整合' },
+                        { value: 4, text: '构建了私有化"媒体大脑"知识库' },
+                        { value: 5, text: '数据已开发为可售卖的产品和洞察报告' }
+                    ]
+                }
+            ];
+
+            React.useEffect(() => {
+                console.log('初始化简化版评估...');
+                setPrivacyChecked(true);
+                setHasValidConsent(true);
+                
+                // 尝试加载保存的会话
+                const savedSession = SimpleStorage.getSession();
+                if (savedSession) {
+                    console.log('找到保存的会话:', savedSession);
+                    setCurrentQuestion(savedSession.currentQuestion || 0);
+                    setAnswers(savedSession.answers || {});
+                }
+            }, []);
+
+            const handleAnswer = (questionId, value) => {
+                const newAnswers = { ...answers, [questionId]: value };
+                setAnswers(newAnswers);
+                
+                // 保存会话数据
+                SimpleStorage.saveSession({
+                    currentQuestion,
+                    answers: newAnswers,
+                    timestamp: Date.now()
+                });
+                
+                console.log('答案已保存:', questionId, value);
+            };
+
+            const nextQuestion = () => {
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                }
+            };
+
+            const prevQuestion = () => {
+                if (currentQuestion > 0) {
+                    setCurrentQuestion(currentQuestion - 1);
+                }
+            };
+
+            if (!privacyChecked) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                        <div className="text-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                            <p className="text-gray-600">正在初始化...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            const currentQ = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                    <div className="max-w-2xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-xl p-8">
+                            <div className="mb-6">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-sm text-gray-500">
+                                        第 {currentQuestion + 1} 题，共 {questions.length} 题
+                                    </span>
+                                    <span className="text-sm text-gray-500">
+                                        {progress.toFixed(0)}% 完成
+                                    </span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                    <div 
+                                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <h2 className="text-xl font-bold text-gray-800 mb-6">
+                                {currentQ.question}
+                            </h2>
+
+                            <div className="space-y-3 mb-8">
+                                {currentQ.options.map((option, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleAnswer(currentQ.id, option.value)}
+                                        className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
+                                            answers[currentQ.id] === option.value
+                                                ? 'border-blue-600 bg-blue-50 text-blue-800'
+                                                : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                                        }`}
+                                    >
+                                        <div className="flex items-center">
+                                            <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                                                answers[currentQ.id] === option.value
+                                                    ? 'border-blue-600 bg-blue-600'
+                                                    : 'border-gray-300'
+                                            }`}>
+                                                {answers[currentQ.id] === option.value && (
+                                                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                                                )}
+                                            </div>
+                                            <span>{option.text}</span>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-between">
+                                <button
+                                    onClick={prevQuestion}
+                                    disabled={currentQuestion === 0}
+                                    className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    上一题
+                                </button>
+                                
+                                <button
+                                    onClick={nextQuestion}
+                                    disabled={currentQuestion === questions.length - 1 || !answers[currentQ.id]}
+                                    className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {currentQuestion === questions.length - 1 ? '完成评估' : '下一题'}
+                                </button>
+                            </div>
+
+                            <div className="mt-6 text-center">
+                                <p className="text-sm text-gray-500">
+                                    调试信息: privacyChecked={privacyChecked.toString()}, hasValidConsent={hasValidConsent.toString()}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                    当前答案: {JSON.stringify(answers)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // 渲染应用
+        ReactDOM.render(<SimpleAssessment />, document.getElementById('root'));
+    </script>
+</body>
+</html>

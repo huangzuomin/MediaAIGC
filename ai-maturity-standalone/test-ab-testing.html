@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B 测试演示 - AI成熟度评估</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        .ab-test-demo {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #003366, #0066cc);
+            color: white;
+            border-radius: 12px;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .demo-section h3 {
+            margin-top: 0;
+            color: #003366;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .test-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .control-button {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-button:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        
+        .control-button.active {
+            background: #003366;
+            color: white;
+            border-color: #003366;
+        }
+        
+        .test-info {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .test-info h4 {
+            margin: 0 0 10px 0;
+            color: #374151;
+        }
+        
+        .test-info p {
+            margin: 5px 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .variant-display {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fafafa;
+        }
+        
+        .variant-display.active {
+            border-color: #003366;
+            background: white;
+        }
+        
+        .dashboard-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .dashboard-button {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .dashboard-button:hover {
+            background: #004080;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 51, 102, 0.4);
+        }
+        
+        .results-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111827;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+        
+        .error-state {
+            text-align: center;
+            padding: 40px;
+            color: #dc2626;
+            background: #fef2f2;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+        }
+    </style>
+</head>
+<body>
+    <div class="ab-test-demo">
+        <div class="demo-header">
+            <h1>A/B 测试框架演示</h1>
+            <p>AI成熟度评估 - 实时测试监控与分析</p>
+        </div>
+
+        <!-- Test Initialization -->
+        <div class="demo-section">
+            <h3>测试初始化</h3>
+            <div class="test-controls">
+                <button class="control-button" onclick="initializeABTesting()">初始化A/B测试</button>
+                <button class="control-button" onclick="resetAllTests()">重置所有测试</button>
+                <button class="control-button" onclick="clearTestData()">清除测试数据</button>
+            </div>
+            <div id="init-status" class="test-info">
+                <h4>初始化状态</h4>
+                <p>点击"初始化A/B测试"开始</p>
+            </div>
+        </div>
+
+        <!-- CTA Messaging Test -->
+        <div class="demo-section">
+            <h3>CTA文案A/B测试</h3>
+            <div class="test-info">
+                <h4>测试说明</h4>
+                <p>测试不同CTA文案对转化率的影响</p>
+                <p>变体: control (标准), urgent (紧迫感), value (价值导向), social (社会证明)</p>
+            </div>
+            <div class="test-controls">
+                <button class="control-button" onclick="simulateCTAView()">模拟CTA展示</button>
+                <button class="control-button" onclick="simulateCTAClick('consultation')">模拟咨询点击</button>
+                <button class="control-button" onclick="simulateCTAClick('learn_more')">模拟了解更多</button>
+            </div>
+            <div id="cta-variant-display" class="variant-display">
+                <p>当前变体: <span id="current-cta-variant">未分配</span></p>
+                <div id="cta-demo-content"></div>
+            </div>
+        </div>
+
+        <!-- Results Display Test -->
+        <div class="demo-section">
+            <h3>结果展示A/B测试</h3>
+            <div class="test-info">
+                <h4>测试说明</h4>
+                <p>测试不同结果展示方式对用户参与度的影响</p>
+                <p>变体: standard (标准), enhanced (增强), simplified (简化)</p>
+            </div>
+            <div class="test-controls">
+                <button class="control-button" onclick="simulateResultsView()">模拟结果展示</button>
+                <button class="control-button" onclick="simulateResultsInteraction()">模拟结果交互</button>
+            </div>
+            <div id="results-variant-display" class="variant-display">
+                <p>当前变体: <span id="current-results-variant">未分配</span></p>
+                <div id="results-demo-content"></div>
+            </div>
+        </div>
+
+        <!-- Share Modal Test -->
+        <div class="demo-section">
+            <h3>分享模态框A/B测试</h3>
+            <div class="test-info">
+                <h4>测试说明</h4>
+                <p>测试不同分享模态框设计对分享率的影响</p>
+                <p>变体: minimal (简洁), comprehensive (完整)</p>
+            </div>
+            <div class="test-controls">
+                <button class="control-button" onclick="simulateShareModal()">模拟分享模态框</button>
+                <button class="control-button" onclick="simulateShareAction('wechat')">模拟微信分享</button>
+                <button class="control-button" onclick="simulateShareAction('weibo')">模拟微博分享</button>
+            </div>
+            <div id="share-variant-display" class="variant-display">
+                <p>当前变体: <span id="current-share-variant">未分配</span></p>
+                <div id="share-demo-content"></div>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="demo-section">
+            <h3>测试结果分析</h3>
+            <div class="test-controls">
+                <button class="control-button" onclick="refreshTestResults()">刷新结果</button>
+                <button class="control-button" onclick="exportTestData()">导出数据</button>
+                <button class="control-button" onclick="generateReport()">生成报告</button>
+            </div>
+            <div id="test-results" class="results-container">
+                <div class="loading-state">
+                    <p>点击"刷新结果"查看测试数据</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Toggle -->
+    <div class="dashboard-toggle">
+        <button class="dashboard-button" onclick="toggleDashboard()">
+            📊 测试控制台
+        </button>
+    </div>
+
+    <!-- Load Dependencies -->
+    <script src="utils/storage.js"></script>
+    <script src="utils/analytics.js"></script>
+    <script src="utils/abTesting.js"></script>
+    <script src="utils/abTestAnalytics.js"></script>
+    <script src="components/ABTestDashboard.js"></script>
+
+    <script>
+        // Global state
+        let dashboardVisible = false;
+        let mockResult = {
+            level: 'L3',
+            levelName: '系统化应用',
+            score: 3.2,
+            color: '#0066cc',
+            industryBenchmark: {
+                description: '行业中等水平',
+                percentile: 65
+            }
+        };
+
+        // Initialize demo
+        function initializeABTesting() {
+            try {
+                // Initialize A/B testing framework
+                if (window.ABTesting) {
+                    window.ABTesting.init({
+                        debug: true,
+                        trackingEnabled: true
+                    });
+                    
+                    updateInitStatus('A/B测试框架已初始化', 'success');
+                    updateVariantDisplays();
+                } else {
+                    updateInitStatus('A/B测试框架未加载', 'error');
+                }
+            } catch (error) {
+                updateInitStatus('初始化失败: ' + error.message, 'error');
+            }
+        }
+
+        function updateInitStatus(message, type = 'info') {
+            const statusEl = document.getElementById('init-status');
+            statusEl.innerHTML = `
+                <h4>初始化状态</h4>
+                <p class="${type}">${message}</p>
+                <p><small>时间: ${new Date().toLocaleTimeString()}</small></p>
+            `;
+        }
+
+        function updateVariantDisplays() {
+            if (!window.ABTesting || !window.ABTesting.state.initialized) return;
+
+            // Update CTA variant
+            const ctaVariant = window.ABTesting.getVariant('cta_messaging');
+            const ctaConfig = window.ABTesting.getVariantConfig('cta_messaging', ctaVariant);
+            document.getElementById('current-cta-variant').textContent = ctaVariant || '未分配';
+            
+            if (ctaConfig) {
+                document.getElementById('cta-demo-content').innerHTML = `
+                    <div class="variant-config">
+                        <p><strong>类型:</strong> ${ctaConfig.type}</p>
+                        <p><strong>紧迫感:</strong> ${ctaConfig.urgency ? '是' : '否'}</p>
+                        <p><strong>价值主张:</strong> ${ctaConfig.valueProposition}</p>
+                    </div>
+                `;
+            }
+
+            // Update Results variant
+            const resultsVariant = window.ABTesting.getVariant('results_display');
+            const resultsConfig = window.ABTesting.getVariantConfig('results_display', resultsVariant);
+            document.getElementById('current-results-variant').textContent = resultsVariant || '未分配';
+            
+            if (resultsConfig) {
+                document.getElementById('results-demo-content').innerHTML = `
+                    <div class="variant-config">
+                        <p><strong>布局:</strong> ${resultsConfig.layout}</p>
+                        <p><strong>动画:</strong> ${resultsConfig.animations}</p>
+                        <p><strong>图表类型:</strong> ${resultsConfig.chartType}</p>
+                        <p><strong>详细程度:</strong> ${resultsConfig.detailLevel}</p>
+                    </div>
+                `;
+            }
+
+            // Update Share variant
+            const shareVariant = window.ABTesting.getVariant('share_modal');
+            const shareConfig = window.ABTesting.getVariantConfig('share_modal', shareVariant);
+            document.getElementById('current-share-variant').textContent = shareVariant || '未分配';
+            
+            if (shareConfig) {
+                document.getElementById('share-demo-content').innerHTML = `
+                    <div class="variant-config">
+                        <p><strong>样式:</strong> ${shareConfig.style}</p>
+                        <p><strong>平台:</strong> ${shareConfig.platforms.join(', ')}</p>
+                        <p><strong>文案类型:</strong> ${shareConfig.copyText}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Simulation functions
+        function simulateCTAView() {
+            if (window.ABTesting) {
+                window.ABTesting.trackInteraction('cta_messaging', 'cta_viewed', {
+                    result_level: mockResult.level,
+                    result_score: mockResult.score
+                });
+                showNotification('CTA展示已记录');
+            }
+        }
+
+        function simulateCTAClick(type) {
+            if (window.ABTesting) {
+                window.ABTesting.trackConversion('cta_messaging', type + '_click', {
+                    result_level: mockResult.level,
+                    result_score: mockResult.score
+                });
+                showNotification(`${type}点击已记录`);
+            }
+        }
+
+        function simulateResultsView() {
+            if (window.ABTesting) {
+                window.ABTesting.trackInteraction('results_display', 'results_viewed', {
+                    result_level: mockResult.level,
+                    result_score: mockResult.score
+                });
+                showNotification('结果展示已记录');
+            }
+        }
+
+        function simulateResultsInteraction() {
+            if (window.ABTesting) {
+                window.ABTesting.trackInteraction('results_display', 'results_interaction', {
+                    result_level: mockResult.level,
+                    result_score: mockResult.score,
+                    interaction_type: 'tab_switch'
+                });
+                showNotification('结果交互已记录');
+            }
+        }
+
+        function simulateShareModal() {
+            if (window.ABTesting) {
+                window.ABTesting.trackInteraction('share_modal', 'modal_opened', {
+                    result_level: mockResult.level,
+                    result_score: mockResult.score
+                });
+                showNotification('分享模态框打开已记录');
+            }
+        }
+
+        function simulateShareAction(platform) {
+            if (window.ABTesting) {
+                window.ABTesting.trackConversion('share_modal', 'share_completed', {
+                    platform: platform,
+                    result_level: mockResult.level,
+                    result_score: mockResult.score
+                });
+                showNotification(`${platform}分享已记录`);
+            }
+        }
+
+        function refreshTestResults() {
+            if (!window.ABTesting || !window.ABTestAnalytics) {
+                document.getElementById('test-results').innerHTML = `
+                    <div class="error-state">
+                        <p>A/B测试框架未初始化</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const resultsContainer = document.getElementById('test-results');
+            resultsContainer.innerHTML = '<div class="loading-state"><p>加载测试结果...</p></div>';
+
+            setTimeout(() => {
+                try {
+                    const testIds = ['cta_messaging', 'results_display', 'share_modal'];
+                    let resultsHTML = '<h4>测试结果概览</h4><div class="metric-grid">';
+
+                    testIds.forEach(testId => {
+                        const results = window.ABTesting.getTestResults(testId);
+                        if (results) {
+                            resultsHTML += `
+                                <div class="metric-card">
+                                    <div class="metric-label">${testId}</div>
+                                    <div class="metric-value">${results.summary.totalParticipants}</div>
+                                    <p style="margin: 5px 0; font-size: 12px; color: #6b7280;">参与者</p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-label">${testId}</div>
+                                    <div class="metric-value">${results.summary.totalConversions}</div>
+                                    <p style="margin: 5px 0; font-size: 12px; color: #6b7280;">转化数</p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-label">${testId}</div>
+                                    <div class="metric-value">${results.summary.overallConversionRate.toFixed(2)}%</div>
+                                    <p style="margin: 5px 0; font-size: 12px; color: #6b7280;">转化率</p>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    resultsHTML += '</div>';
+                    resultsContainer.innerHTML = resultsHTML;
+                } catch (error) {
+                    resultsContainer.innerHTML = `
+                        <div class="error-state">
+                            <p>加载结果失败: ${error.message}</p>
+                        </div>
+                    `;
+                }
+            }, 1000);
+        }
+
+        function exportTestData() {
+            if (window.ABTestAnalytics) {
+                try {
+                    const data = window.ABTestAnalytics.exportAnalysis('cta_messaging', 'json');
+                    const blob = new Blob([data], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `ab_test_data_${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showNotification('测试数据已导出');
+                } catch (error) {
+                    showNotification('导出失败: ' + error.message, 'error');
+                }
+            }
+        }
+
+        function generateReport() {
+            if (window.ABTestAnalytics) {
+                try {
+                    const report = window.ABTestAnalytics.generateComprehensiveReport('cta_messaging');
+                    console.log('Generated Report:', report);
+                    showNotification('报告已生成，请查看控制台');
+                } catch (error) {
+                    showNotification('报告生成失败: ' + error.message, 'error');
+                }
+            }
+        }
+
+        function resetAllTests() {
+            if (window.ABTesting) {
+                window.ABTesting.clearAllData();
+                updateInitStatus('所有测试数据已重置', 'success');
+                updateVariantDisplays();
+                showNotification('测试已重置');
+            }
+        }
+
+        function clearTestData() {
+            if (window.ABTesting) {
+                window.ABTesting.clearAllData();
+                showNotification('测试数据已清除');
+            }
+        }
+
+        function toggleDashboard() {
+            dashboardVisible = !dashboardVisible;
+            
+            if (dashboardVisible) {
+                // Create dashboard if it doesn't exist
+                if (!document.getElementById('ab-dashboard')) {
+                    const dashboardContainer = document.createElement('div');
+                    dashboardContainer.id = 'ab-dashboard';
+                    document.body.appendChild(dashboardContainer);
+                    
+                    if (window.ABTestDashboard) {
+                        ReactDOM.render(
+                            React.createElement(window.ABTestDashboard, {
+                                isVisible: true,
+                                onClose: () => toggleDashboard()
+                            }),
+                            dashboardContainer
+                        );
+                    }
+                }
+            } else {
+                // Remove dashboard
+                const dashboard = document.getElementById('ab-dashboard');
+                if (dashboard) {
+                    dashboard.remove();
+                }
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#dc2626' : '#059669'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Auto-initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add some delay to ensure all scripts are loaded
+            setTimeout(() => {
+                initializeABTesting();
+            }, 500);
+        });
+    </script>
+
+    <!-- React for Dashboard (if needed) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+</body>
+</html>

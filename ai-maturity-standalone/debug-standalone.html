@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调试版本 - AI成熟度自测</title>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #FF6B35;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <h2 class="text-xl font-semibold text-blue-600 mb-2">正在加载AI成熟度自测...</h2>
+            <p class="text-gray-600">请稍候，正在为您准备专业的评估工具</p>
+        </div>
+    </div>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // 简单的测试应用
+        function DebugApp() {
+            const [isLoading, setIsLoading] = React.useState(true);
+            const [step, setStep] = React.useState('initializing');
+
+            React.useEffect(() => {
+                console.log('DebugApp mounted');
+                
+                // 模拟初始化步骤
+                setTimeout(() => {
+                    console.log('Step 1: Basic initialization');
+                    setStep('basic_init');
+                }, 500);
+
+                setTimeout(() => {
+                    console.log('Step 2: Loading components');
+                    setStep('loading_components');
+                }, 1000);
+
+                setTimeout(() => {
+                    console.log('Step 3: Finalizing');
+                    setStep('finalizing');
+                }, 1500);
+
+                setTimeout(() => {
+                    console.log('Step 4: Hiding loading screen');
+                    setIsLoading(false);
+                    hideLoadingScreen();
+                }, 2000);
+            }, []);
+
+            const hideLoadingScreen = () => {
+                console.log('hideLoadingScreen called');
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    console.log('Loading screen found, hiding...');
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        console.log('Loading screen hidden successfully');
+                    }, 300);
+                } else {
+                    console.warn('Loading screen element not found');
+                }
+            };
+
+            if (isLoading) {
+                return (
+                    <div className="fixed inset-0 bg-gray-100 flex items-center justify-center z-10">
+                        <div className="text-center">
+                            <div className="text-blue-600 mb-4">
+                                <div className="animate-pulse text-lg">调试模式: {step}</div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                    <div className="max-w-2xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-xl p-8">
+                            <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+                                🎉 应用加载成功！
+                            </h1>
+                            
+                            <div className="space-y-4">
+                                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                                    <h3 className="font-semibold text-green-800 mb-2">✅ 成功加载的组件：</h3>
+                                    <ul className="text-sm text-green-700 space-y-1">
+                                        <li>• React 组件系统</li>
+                                        <li>• 加载屏幕控制</li>
+                                        <li>• 基础样式系统</li>
+                                        <li>• 状态管理</li>
+                                    </ul>
+                                </div>
+
+                                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <h3 className="font-semibold text-blue-800 mb-2">🔧 调试信息：</h3>
+                                    <ul className="text-sm text-blue-700 space-y-1">
+                                        <li>• 当前时间: {new Date().toLocaleString()}</li>
+                                        <li>• 用户代理: {navigator.userAgent.substring(0, 50)}...</li>
+                                        <li>• 屏幕尺寸: {window.innerWidth}x{window.innerHeight}</li>
+                                        <li>• 设备类型: {window.innerWidth < 768 ? '移动设备' : '桌面设备'}</li>
+                                    </ul>
+                                </div>
+
+                                <div className="text-center">
+                                    <button 
+                                        onClick={() => {
+                                            console.log('测试按钮点击');
+                                            alert('应用运行正常！');
+                                        }}
+                                        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                                    >
+                                        测试交互
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // 超时检测
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen && loadingScreen.style.display !== 'none') {
+                console.error('调试应用也超时了！这表明有更深层的问题。');
+                loadingScreen.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-red-500 mb-4">
+                            <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-red-600 mb-2">调试应用也无法加载</h2>
+                        <p class="text-gray-600">这表明存在更深层的问题</p>
+                    </div>
+                `;
+            }
+        }, 5000);
+
+        // 渲染应用
+        console.log('开始渲染调试应用...');
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(DebugApp));
+        console.log('调试应用渲染完成');
+    </script>
+</body>
+</html>

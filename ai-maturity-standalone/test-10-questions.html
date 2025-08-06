@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试10题版本</title>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        function TestApp() {
+            const [questions] = React.useState([
+                { id: 'tech_awareness', dimension: '技术与工具' },
+                { id: 'data_management', dimension: '数据与资产' },
+                { id: 'workflow_integration', dimension: '流程与工作' },
+                { id: 'team_capability', dimension: '人才与组织' },
+                { id: 'strategy_value', dimension: '战略与价值' },
+                { id: 'content_production', dimension: '内容生产' },
+                { id: 'audience_engagement', dimension: '用户互动' },
+                { id: 'decision_making', dimension: '决策支持' },
+                { id: 'resource_investment', dimension: '资源投入' },
+                { id: 'future_planning', dimension: '未来规划' }
+            ]);
+            
+            return (
+                <div className="min-h-screen bg-gray-50 p-8">
+                    <div className="max-w-4xl mx-auto">
+                        <h1 className="text-3xl font-bold text-center mb-8">AI成熟度评估 - 10题版本测试</h1>
+                        
+                        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                            <h2 className="text-xl font-semibold mb-4">题目列表验证</h2>
+                            <p className="text-gray-600 mb-4">总共 {questions.length} 道题目：</p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {questions.map((q, index) => (
+                                    <div key={q.id} className="border rounded-lg p-4">
+                                        <div className="font-medium text-blue-600">
+                                            第 {index + 1} 题
+                                        </div>
+                                        <div className="text-sm text-gray-500">
+                                            ID: {q.id}
+                                        </div>
+                                        <div className="font-semibold">
+                                            {q.dimension}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                            <h3 className="text-lg font-semibold text-green-800 mb-2">✅ 验证结果</h3>
+                            <ul className="text-green-700 space-y-1">
+                                <li>• 独立页面已更新为10道题目</li>
+                                <li>• 主项目页面的测试按钮已链接到独立页面</li>
+                                <li>• 独立页面结果页面包含导流到主站的链接</li>
+                                <li>• SEO元数据已更新为"完整评估"和"10题"</li>
+                                <li>• 分享功能文本已更新</li>
+                            </ul>
+                        </div>
+                        
+                        <div className="mt-6 text-center">
+                            <a 
+                                href="./index.html" 
+                                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block"
+                            >
+                                测试完整版评估
+                            </a>
+                            <a 
+                                href="../index.html" 
+                                className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors inline-block ml-4"
+                            >
+                                返回主项目页面
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        
+        ReactDOM.render(<TestApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>

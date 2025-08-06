@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隐私保护功能测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #002244;
+        }
+        .danger {
+            background: #dc3545;
+        }
+        .danger:hover {
+            background: #c82333;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>隐私保护功能测试</h1>
+    <p>此页面用于测试AI成熟度评估工具的隐私保护功能。</p>
+
+    <div class="test-section">
+        <h2>1. 存储和加密测试</h2>
+        <button onclick="testEncryption()">测试数据加密</button>
+        <button onclick="testStorage()">测试数据存储</button>
+        <div id="encryption-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. 隐私合规测试</h2>
+        <button onclick="testCompliance()">检查合规状态</button>
+        <button onclick="testConsent()">测试同意管理</button>
+        <div id="compliance-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. 用户权利测试</h2>
+        <button onclick="testAccessRequest()">测试数据访问</button>
+        <button onclick="testPortability()">测试数据可携带性</button>
+        <button onclick="testRectification()">测试数据更正</button>
+        <div id="rights-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. 数据清除测试</h2>
+        <button onclick="testDataSummary()">查看数据概览</button>
+        <button onclick="testExportData()">导出数据</button>
+        <button onclick="testClearData()" class="danger">清除所有数据</button>
+        <div id="data-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. 隐私通知测试</h2>
+        <button onclick="showPrivacyNotice()">显示隐私通知</button>
+        <button onclick="showPrivacySettings()">显示隐私设置</button>
+        <button onclick="showDataSummary()">显示数据概览</button>
+        <div id="notice-results"></div>
+    </div>
+
+    <!-- Include required scripts -->
+    <script src="utils/storage.js"></script>
+    <script src="utils/privacy.js"></script>
+    <script src="components/PrivacyNotice.js"></script>
+
+    <script>
+        // Test functions
+        function displayResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            container.appendChild(div);
+        }
+
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        // 1. Encryption and Storage Tests
+        function testEncryption() {
+            clearResults('encryption-results');
+            
+            try {
+                const testData = {
+                    sessionId: 'test-session-123',
+                    answers: { q1: 3, q2: 4, q3: 2 },
+                    timestamp: Date.now()
+                };
+
+                // Test encryption
+                const encrypted = Storage.encrypt(testData);
+                const decrypted = Storage.decrypt(encrypted);
+
+                if (JSON.stringify(testData) === JSON.stringify(decrypted)) {
+                    displayResult('encryption-results', '✅ 数据加密/解密测试通过', 'success');
+                    displayResult('encryption-results', `加密后数据: ${encrypted.substring(0, 50)}...`, 'info');
+                } else {
+                    displayResult('encryption-results', '❌ 数据加密/解密测试失败', 'error');
+                }
+
+                // Test encryption key generation
+                const key1 = Storage.getEncryptionKey();
+                const key2 = Storage.getEncryptionKey();
+                
+                if (key1 === key2) {
+                    displayResult('encryption-results', '✅ 加密密钥一致性测试通过', 'success');
+                } else {
+                    displayResult('encryption-results', '❌ 加密密钥一致性测试失败', 'error');
+                }
+
+            } catch (e) {
+                displayResult('encryption-results', `❌ 加密测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function testStorage() {
+            clearResults('encryption-results');
+            
+            try {
+                const testSession = {
+                    sessionId: 'test-' + Date.now(),
+                    startTime: new Date().toISOString(),
+                    currentQuestion: 1,
+                    answers: { q1: 3 }
+                };
+
+                // Test encrypted storage
+                const saved = Storage.saveSession(testSession);
+                if (saved) {
+                    displayResult('encryption-results', '✅ 会话数据保存成功（已加密）', 'success');
+                } else {
+                    displayResult('encryption-results', '❌ 会话数据保存失败', 'error');
+                }
+
+                // Test retrieval
+                const retrieved = Storage.getSession();
+                if (retrieved && retrieved.sessionId === testSession.sessionId) {
+                    displayResult('encryption-results', '✅ 会话数据读取成功（已解密）', 'success');
+                } else {
+                    displayResult('encryption-results', '❌ 会话数据读取失败', 'error');
+                }
+
+                // Test storage info
+                const storageInfo = Storage.getStorageInfo();
+                displayResult('encryption-results', `存储使用情况: ${storageInfo.usedFormatted} (${storageInfo.percentage.toFixed(1)}%)`, 'info');
+
+            } catch (e) {
+                displayResult('encryption-results', `❌ 存储测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        // 2. Compliance Tests
+        function testCompliance() {
+            clearResults('compliance-results');
+            
+            try {
+                const complianceStatus = Privacy.checkComplianceStatus();
+                
+                displayResult('compliance-results', '<h3>合规状态检查:</h3>', 'info');
+                displayResult('compliance-results', `同意状态有效: ${complianceStatus.consentValid ? '✅' : '❌'}`, complianceStatus.consentValid ? 'success' : 'error');
+                displayResult('compliance-results', `数据保留合规: ${complianceStatus.dataRetentionCompliant ? '✅' : '❌'}`, complianceStatus.dataRetentionCompliant ? 'success' : 'error');
+                displayResult('compliance-results', `加密功能正常: ${complianceStatus.encryptionActive ? '✅' : '❌'}`, complianceStatus.encryptionActive ? 'success' : 'error');
+                displayResult('compliance-results', `用户权利支持: ${complianceStatus.userRightsSupported ? '✅' : '❌'}`, complianceStatus.userRightsSupported ? 'success' : 'error');
+
+                // Generate compliance report
+                const report = Privacy.getComplianceReport();
+                displayResult('compliance-results', '<pre>' + JSON.stringify(report, null, 2) + '</pre>', 'info');
+
+            } catch (e) {
+                displayResult('compliance-results', `❌ 合规测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function testConsent() {
+            clearResults('compliance-results');
+            
+            try {
+                // Test consent validation
+                const storageConsent = Privacy.validateConsent('storage');
+                const analyticsConsent = Privacy.validateConsent('analytics');
+                const sharingConsent = Privacy.validateConsent('sharing');
+
+                displayResult('compliance-results', '<h3>同意状态验证:</h3>', 'info');
+                displayResult('compliance-results', `存储同意: ${storageConsent ? '✅' : '❌'}`, storageConsent ? 'success' : 'error');
+                displayResult('compliance-results', `分析同意: ${analyticsConsent ? '✅' : '❌'}`, analyticsConsent ? 'success' : 'error');
+                displayResult('compliance-results', `分享同意: ${sharingConsent ? '✅' : '❌'}`, sharingConsent ? 'success' : 'error');
+
+                // Test consent update
+                const newConsent = {
+                    storage: true,
+                    analytics: false,
+                    sharing: false
+                };
+
+                Storage.updateConsent(newConsent);
+                displayResult('compliance-results', '✅ 同意设置已更新', 'success');
+
+            } catch (e) {
+                displayResult('compliance-results', `❌ 同意测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        // 3. User Rights Tests
+        function testAccessRequest() {
+            clearResults('rights-results');
+            
+            try {
+                const accessData = Privacy.handleAccessRequest();
+                
+                if (accessData.success) {
+                    displayResult('rights-results', '✅ 数据访问请求成功', 'success');
+                    displayResult('rights-results', '<pre>' + JSON.stringify(accessData.summary, null, 2) + '</pre>', 'info');
+                } else {
+                    displayResult('rights-results', `❌ 数据访问请求失败: ${accessData.error}`, 'error');
+                }
+
+            } catch (e) {
+                displayResult('rights-results', `❌ 访问请求测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function testPortability() {
+            clearResults('rights-results');
+            
+            try {
+                const portableData = Privacy.handlePortabilityRequest();
+                
+                if (portableData) {
+                    displayResult('rights-results', '✅ 数据可携带性请求成功', 'success');
+                    displayResult('rights-results', `数据大小: ${portableData.length} 字符`, 'info');
+                    
+                    // Show first 500 characters
+                    const preview = portableData.substring(0, 500) + (portableData.length > 500 ? '...' : '');
+                    displayResult('rights-results', '<pre>' + preview + '</pre>', 'info');
+                } else {
+                    displayResult('rights-results', '❌ 数据可携带性请求失败', 'error');
+                }
+
+            } catch (e) {
+                displayResult('rights-results', `❌ 可携带性测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function testRectification() {
+            clearResults('rights-results');
+            
+            try {
+                // Test preference rectification
+                const newPreferences = {
+                    theme: 'dark',
+                    language: 'en-US',
+                    analytics: false
+                };
+
+                const success = Privacy.handleRectificationRequest('preferences', newPreferences);
+                
+                if (success) {
+                    displayResult('rights-results', '✅ 数据更正请求成功', 'success');
+                    displayResult('rights-results', '偏好设置已更新', 'info');
+                } else {
+                    displayResult('rights-results', '❌ 数据更正请求失败', 'error');
+                }
+
+            } catch (e) {
+                displayResult('rights-results', `❌ 更正请求测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        // 4. Data Management Tests
+        function testDataSummary() {
+            clearResults('data-results');
+            
+            try {
+                const summary = Storage.getDataSummary();
+                displayResult('data-results', '<h3>数据概览:</h3>', 'info');
+                displayResult('data-results', '<pre>' + JSON.stringify(summary, null, 2) + '</pre>', 'info');
+
+            } catch (e) {
+                displayResult('data-results', `❌ 数据概览测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function testExportData() {
+            clearResults('data-results');
+            
+            try {
+                const exportData = Storage.exportData();
+                displayResult('data-results', '✅ 数据导出成功', 'success');
+                displayResult('data-results', `导出数据大小: ${exportData.length} 字符`, 'info');
+                
+                // Create download link
+                const blob = new Blob([exportData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `privacy-test-data-${new Date().toISOString().split('T')[0]}.json`;
+                a.textContent = '下载导出的数据';
+                a.style.display = 'block';
+                a.style.margin = '10px 0';
+                
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'test-result info';
+                resultDiv.appendChild(a);
+                document.getElementById('data-results').appendChild(resultDiv);
+
+            } catch (e) {
+                displayResult('data-results', `❌ 数据导出测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function testClearData() {
+            clearResults('data-results');
+            
+            if (confirm('确定要清除所有测试数据吗？此操作无法撤销。')) {
+                try {
+                    const success = Privacy.handleErasureRequest('test_request');
+                    
+                    if (success) {
+                        displayResult('data-results', '✅ 所有数据已清除', 'success');
+                        displayResult('data-results', '页面将在3秒后刷新...', 'info');
+                        
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
+                    } else {
+                        displayResult('data-results', '❌ 数据清除失败', 'error');
+                    }
+
+                } catch (e) {
+                    displayResult('data-results', `❌ 数据清除测试出错: ${e.message}`, 'error');
+                }
+            }
+        }
+
+        // 5. Privacy Notice Tests
+        function showPrivacyNotice() {
+            clearResults('notice-results');
+            
+            try {
+                if (window.PrivacyNotice) {
+                    PrivacyNotice.show();
+                    displayResult('notice-results', '✅ 隐私通知已显示', 'success');
+                } else {
+                    displayResult('notice-results', '❌ 隐私通知组件未加载', 'error');
+                }
+
+            } catch (e) {
+                displayResult('notice-results', `❌ 隐私通知测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function showPrivacySettings() {
+            clearResults('notice-results');
+            
+            try {
+                if (window.PrivacyNotice) {
+                    PrivacyNotice.showSettings();
+                    displayResult('notice-results', '✅ 隐私设置已显示', 'success');
+                } else {
+                    displayResult('notice-results', '❌ 隐私通知组件未加载', 'error');
+                }
+
+            } catch (e) {
+                displayResult('notice-results', `❌ 隐私设置测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        function showDataSummary() {
+            clearResults('notice-results');
+            
+            try {
+                if (window.PrivacyNotice) {
+                    PrivacyNotice.showDataSummary();
+                    displayResult('notice-results', '✅ 数据概览已显示', 'success');
+                } else {
+                    displayResult('notice-results', '❌ 隐私通知组件未加载', 'error');
+                }
+
+            } catch (e) {
+                displayResult('notice-results', `❌ 数据概览测试出错: ${e.message}`, 'error');
+            }
+        }
+
+        // Initialize test environment
+        window.addEventListener('load', function() {
+            // Create some test data
+            const testSession = {
+                sessionId: 'privacy-test-' + Date.now(),
+                startTime: new Date().toISOString(),
+                currentQuestion: 3,
+                answers: { q1: 4, q2: 3, q3: 5 }
+            };
+
+            const testResult = {
+                level: 'L3',
+                levelName: '应用级',
+                score: '75',
+                recommendations: ['建议1', '建议2', '建议3']
+            };
+
+            Storage.saveSession(testSession);
+            Storage.saveResult(testResult);
+
+            console.log('隐私保护测试环境已初始化');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媒体AI成熟度5分钟自测 | 免费评估您的AI转型水平</title>
+
+    <!-- React and Dependencies -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Independent Styles -->
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body class="smooth-scroll">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div
+                class="w-16 h-16 border-4 border-primary-color border-t-transparent rounded-full animate-spin mx-auto mb-4">
+            </div>
+            <p class="text-primary-color font-medium">正在加载AI成熟度自测...</p>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="root"></div>
+
+    <!-- Minimal Components -->
+    <script type="text/babel" src="components/StandaloneAssessmentSimple.js"></script>
+
+    <!-- Minimal App -->
+    <script type="text/babel">
+        // Minimal Standalone App
+        function MinimalApp() {
+            const [isLoading, setIsLoading] = React.useState(true);
+
+            React.useEffect(() => {
+                console.log('Initializing minimal app...');
+
+                setTimeout(() => {
+                    console.log('Hiding loading screen...');
+                    setIsLoading(false);
+
+                    const loadingScreen = document.getElementById('loading-screen');
+                    if (loadingScreen) {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 300);
+                    }
+                }, 1000);
+            }, []);
+
+            if (isLoading) {
+                return null; // Loading screen is handled by HTML
+            }
+
+            return React.createElement(StandaloneAssessment);
+        }
+
+        // Initialize React app
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM loaded, initializing React app...');
+            const root = document.getElementById('root');
+            if (root) {
+                if (ReactDOM.createRoot) {
+                    const reactRoot = ReactDOM.createRoot(root);
+                    reactRoot.render(React.createElement(MinimalApp));
+                } else {
+                    ReactDOM.render(React.createElement(MinimalApp), root);
+                }
+                console.log('React app initialized');
+            } else {
+                console.error('Root element not found');
+            }
+        });
+
+        // Error handling
+        window.addEventListener('error', function (e) {
+            console.error('Global error:', e.message, e.filename, e.lineno);
+        });
+
+        window.addEventListener('unhandledrejection', function (e) {
+            console.error('Unhandled promise rejection:', e.reason);
+        });
+    </script>
+</body>
+
+</html>

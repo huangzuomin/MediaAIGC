@@ -5,7 +5,6 @@ function ServiceRouter() {
   const showProjectDetail = () => setCurrentPage('project');
   const showPartnerDetail = () => setCurrentPage('partner');
   const showStarterPackDetail = () => setCurrentPage('starterpack');
-  const showAssessment = () => setCurrentPage('assessment');
   const showMainPage = () => setCurrentPage('main');
 
   // 根据当前页面状态渲染不同内容
@@ -24,10 +23,6 @@ function ServiceRouter() {
   if (currentPage === 'starterpack') {
     return <StarterPackDetailPage onBack={showMainPage} />;
   }
-  
-  if (currentPage === 'assessment') {
-    return <AIMaturityAssessment onBack={showMainPage} />;
-  }
 
   // 默认显示主页面
   return (
@@ -36,7 +31,7 @@ function ServiceRouter() {
       <Navigation />
       <HeroSection />
       <SectionDivider />
-      <FrameworkSection onAssessmentClick={showAssessment} />
+      <FrameworkSection />
       <SectionDivider />
       <ServiceMatrix />
       <SectionDivider />

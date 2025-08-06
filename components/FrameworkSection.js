@@ -44,7 +44,16 @@ function FrameworkSection({ onAssessmentClick }) {
             
             <div className="flex justify-center">
               <button 
-                onClick={onAssessmentClick}
+                onClick={() => {
+                  // 跳转到独立部署的AI成熟度测试页面
+                  const standaloneUrl = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1') 
+                    ? './ai-maturity-standalone/index.html' 
+                    : '/ai-maturity-standalone/';
+                  window.open(standaloneUrl, '_blank');
+                  
+                  // 记录用户点击事件
+                  console.log('User clicked assessment from main site');
+                }}
                 className="bg-[var(--accent-color)] text-[var(--primary-color)] px-8 py-3 rounded-lg font-bold text-lg hover:bg-opacity-90 transition-all duration-300 hover:scale-105 shadow-lg"
               >
                 🎯 立即开始5分钟自测

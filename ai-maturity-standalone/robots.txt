@@ -1,0 +1,52 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://wzxww.com/ai-maturity-standalone/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: 360Spider
+Allow: /
+Crawl-delay: 2
+
+User-agent: Sogou web spider
+Allow: /
+Crawl-delay: 2
+
+# Block access to sensitive areas
+Disallow: /assets/temp/
+Disallow: /utils/
+Disallow: /*.json$
+Disallow: /*?debug=*
+Disallow: /*&debug=*
+Disallow: /components/
+Disallow: /*.js$
+
+# Allow access to important resources
+Allow: /assets/images/
+Allow: /assets/og-*.jpg
+Allow: /assets/logo.png
+Allow: /favicon.ico
+Allow: /assets/styles.css
+
+# Crawling preferences
+Request-rate: 1/10s
+Visit-time: 0600-2300
+
+# Cache directive
+Cache-delay: 86400

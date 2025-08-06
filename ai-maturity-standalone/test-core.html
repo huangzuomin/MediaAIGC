@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核心功能测试</title>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #FF6B35;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Load core scripts -->
+    <script type="text/babel" src="utils/storage.js"></script>
+    <script type="text/babel">
+        // Test if Storage is loaded
+        console.log('Testing Storage:', typeof window.Storage);
+        
+        if (window.Storage) {
+            console.log('Storage methods:', Object.keys(window.Storage));
+            
+            // Test basic storage
+            const testData = { test: 'value', timestamp: Date.now() };
+            const saved = window.Storage.setItem('test-key', testData);
+            const retrieved = window.Storage.getItem('test-key');
+            
+            console.log('Storage test - saved:', saved);
+            console.log('Storage test - retrieved:', retrieved);
+        }
+    </script>
+
+    <script type="text/babel" src="utils/privacy.js"></script>
+    <script type="text/babel">
+        // Test if Privacy is loaded
+        console.log('Testing Privacy:', typeof window.Privacy);
+        
+        if (window.Privacy) {
+            console.log('Privacy methods:', Object.keys(window.Privacy));
+        }
+    </script>
+
+    <script type="text/babel" src="components/StandaloneAssessment.js"></script>
+    <script type="text/babel">
+        // Test if StandaloneAssessment is loaded
+        console.log('Testing StandaloneAssessment:', typeof StandaloneAssessment);
+        
+        // Simple test component
+        function TestApp() {
+            const [status, setStatus] = React.useState('Loading...');
+            
+            React.useEffect(() => {
+                setTimeout(() => {
+                    setStatus('All systems loaded successfully!');
+                }, 1000);
+            }, []);
+            
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                    <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
+                        <h1 className="text-2xl font-bold text-center mb-4">核心功能测试</h1>
+                        <p className="text-center text-gray-600 mb-6">{status}</p>
+                        
+                        <div className="space-y-2 text-sm">
+                            <div>Storage: {window.Storage ? '✅ 已加载' : '❌ 未加载'}</div>
+                            <div>Privacy: {window.Privacy ? '✅ 已加载' : '❌ 未加载'}</div>
+                            <div>StandaloneAssessment: {typeof StandaloneAssessment !== 'undefined' ? '✅ 已加载' : '❌ 未加载'}</div>
+                        </div>
+                        
+                        <button 
+                            onClick={() => {
+                                console.log('Starting assessment...');
+                                ReactDOM.render(React.createElement(StandaloneAssessment), document.getElementById('root'));
+                            }}
+                            className="w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                            启动评估组件
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        
+        // Render test app
+        ReactDOM.render(React.createElement(TestApp), document.getElementById('root'));
+    </script>
+</body>
+</html>

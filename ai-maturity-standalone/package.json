@@ -1,0 +1,60 @@
+{
+  "name": "ai-maturity-standalone",
+  "version": "1.0.0",
+  "description": "媒体AI成熟度5分钟自测 - 独立部署版本",
+  "main": "index.html",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "deploy": "node scripts/deploy.js",
+    "optimize": "node scripts/optimize.js",
+    "serve": "node scripts/serve.js",
+    "test": "node tests/testRunner.js",
+    "test:unit": "node tests/testRunner.js --category=components",
+    "test:e2e": "node tests/testRunner.js --category=e2e",
+    "test:performance": "node tests/testRunner.js --category=performance",
+    "test:compatibility": "node tests/testRunner.js --category=compatibility",
+    "test:watch": "node tests/testRunner.js --watch",
+    "test:coverage": "jest --coverage",
+    "test:report": "node tests/testRunner.js --report=tests/reports/test-results.json",
+    "validate": "node scripts/validate.js",
+    "clean": "node scripts/clean.js",
+    "compress": "node scripts/compress.js"
+  },
+  "keywords": [
+    "AI",
+    "maturity",
+    "assessment",
+    "media",
+    "standalone"
+  ],
+  "author": "温州新闻网·智媒变革中心",
+  "license": "MIT",
+  "devDependencies": {
+    "fs-extra": "^11.1.1",
+    "html-minifier": "^4.0.0",
+    "clean-css": "^5.3.2",
+    "terser": "^5.19.2",
+    "gzip-size": "^7.0.0",
+    "http-server": "^14.1.1",
+    "mime-types": "^2.1.35",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-html-reporters": "^3.1.5",
+    "jest-junit": "^16.0.0",
+    "jest-serializer-html": "^7.1.0",
+    "jest-watch-typeahead": "^2.2.2",
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "babel-jest": "^29.7.0",
+    "jsdom": "^23.0.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/ai-maturity-standalone.git"
+  },
+  "homepage": "https://your-domain.com/ai-maturity-standalone",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

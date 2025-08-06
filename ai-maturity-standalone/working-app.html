@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媒体AI成熟度5分钟自测 | 免费评估您的AI转型水平</title>
+    <meta name="description" content="专业的媒体AI成熟度自测工具，5分钟快速评估您机构的AI应用水平，获得个性化转型建议和专家指导">
+    <meta name="keywords" content="AI成熟度测试,媒体AI转型,AI自测,智媒变革,AI评估工具">
+
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #FF6B35;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // 完整的AI成熟度评估组件
+        function WorkingAssessment() {
+            const [currentQuestion, setCurrentQuestion] = React.useState(0);
+            const [answers, setAnswers] = React.useState({});
+            const [showResult, setShowResult] = React.useState(false);
+            const [result, setResult] = React.useState(null);
+            const [sessionId] = React.useState(() => 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9));
+
+            const questions = [
+                {
+                    id: 'tech_awareness',
+                    dimension: '技术与工具',
+                    question: '您的机构目前对AI技术的认知和应用情况是？',
+                    options: [
+                        { value: 1, text: '仅在讨论概念，关注新闻报道', level: 'L1' },
+                        { value: 2, text: '员工自发使用ChatGPT等公网工具', level: 'L2' },
+                        { value: 3, text: '采购了专门的AI工具用于特定业务', level: 'L3' },
+                        { value: 4, text: '建设了统一的AI中台或平台', level: 'L4' },
+                        { value: 5, text: 'AI能力可灵活编排并对外提供服务', level: 'L5' }
+                    ]
+                },
+                {
+                    id: 'data_management',
+                    dimension: '数据与资产',
+                    question: '您的机构在数据管理和资产化方面的现状是？',
+                    options: [
+                        { value: 1, text: '数据孤岛严重，资产未被有效管理', level: 'L1' },
+                        { value: 2, text: '个人处理少量数据，缺乏统一管理', level: 'L2' },
+                        { value: 3, text: '特定业务线的数据已打通整合', level: 'L3' },
+                        { value: 4, text: '构建了私有化"媒体大脑"知识库', level: 'L4' },
+                        { value: 5, text: '数据已开发为可售卖的产品和洞察报告', level: 'L5' }
+                    ]
+                },
+                {
+                    id: 'content_production',
+                    dimension: '内容生产',
+                    question: '您的机构在AI辅助内容生产方面的应用程度是？',
+                    options: [
+                        { value: 1, text: '完全依赖人工创作，未使用AI工具', level: 'L1' },
+                        { value: 2, text: '偶尔使用AI工具辅助写作或编辑', level: 'L2' },
+                        { value: 3, text: '在特定内容类型中规模化使用AI', level: 'L3' },
+                        { value: 4, text: '建立了AI内容生产的标准化流程', level: 'L4' },
+                        { value: 5, text: 'AI与人工协作的内容生产体系成熟', level: 'L5' }
+                    ]
+                },
+                {
+                    id: 'audience_analysis',
+                    dimension: '受众分析',
+                    question: '您的机构在AI驱动的受众分析和个性化推荐方面的能力如何？',
+                    options: [
+                        { value: 1, text: '主要依靠传统的人口统计学分析', level: 'L1' },
+                        { value: 2, text: '使用基础的数据分析工具了解受众', level: 'L2' },
+                        { value: 3, text: '应用AI进行用户行为分析和内容推荐', level: 'L3' },
+                        { value: 4, text: '建立了精准的用户画像和个性化系统', level: 'L4' },
+                        { value: 5, text: '实现了实时的智能化受众洞察和预测', level: 'L5' }
+                    ]
+                },
+                {
+                    id: 'distribution_optimization',
+                    dimension: '分发优化',
+                    question: '您的机构在AI优化内容分发和传播效果方面的实践如何？',
+                    options: [
+                        { value: 1, text: '主要依靠人工经验进行内容分发', level: 'L1' },
+                        { value: 2, text: '使用平台自带的基础推荐算法', level: 'L2' },
+                        { value: 3, text: '运用AI工具优化发布时间和渠道选择', level: 'L3' },
+                        { value: 4, text: '建立了多平台智能分发和效果监测体系', level: 'L4' },
+                        { value: 5, text: '实现了跨媒体的智能化内容分发生态', level: 'L5' }
+                    ]
+                }
+            ];
+
+            const handleAnswer = (questionId, value) => {
+                const newAnswers = { ...answers, [questionId]: value };
+                setAnswers(newAnswers);
+
+                // 保存到localStorage
+                try {
+                    localStorage.setItem('ai-maturity-session', JSON.stringify({
+                        sessionId,
+                        currentQuestion,
+                        answers: newAnswers,
+                        timestamp: Date.now()
+                    }));
+                } catch (e) {
+                    console.warn('Could not save to localStorage:', e);
+                }
+            };
+
+            const nextQuestion = () => {
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                } else {
+                    calculateResult();
+                }
+            };
+
+            const prevQuestion = () => {
+                if (currentQuestion > 0) {
+                    setCurrentQuestion(currentQuestion - 1);
+                }
+            };
+
+            const calculateResult = () => {
+                const totalScore = Object.values(answers).reduce((sum, value) => sum + value, 0);
+                const averageScore = totalScore / questions.length;
+
+                let level, levelName, description, recommendations;
+
+                if (averageScore >= 4.5) {
+                    level = 'L5';
+                    levelName = '引领级';
+                    description = '您的机构在AI应用方面已达到行业领先水平，具备完整的AI生态和创新能力。';
+                    recommendations = [
+                        '继续保持技术领先优势，探索前沿AI技术',
+                        '建立AI创新实验室，孵化新的应用场景',
+                        '对外输出AI能力，建立行业标准',
+                        '培养AI人才梯队，建设学习型组织'
+                    ];
+                } else if (averageScore >= 3.5) {
+                    level = 'L4';
+                    levelName = '优化级';
+                    description = '您的机构已建立较为完善的AI应用体系，正在向智能化转型的高级阶段迈进。';
+                    recommendations = [
+                        '完善AI治理体系，建立标准化流程',
+                        '加强跨部门AI协作，打破数据孤岛',
+                        '投资AI基础设施，提升处理能力',
+                        '建立AI效果评估体系，持续优化'
+                    ];
+                } else if (averageScore >= 2.5) {
+                    level = 'L3';
+                    levelName = '应用级';
+                    description = '您的机构已开始规模化应用AI技术，在特定领域取得了良好效果。';
+                    recommendations = [
+                        '扩大AI应用范围，覆盖更多业务场景',
+                        '建立AI数据管理规范，提升数据质量',
+                        '加强AI技能培训，提升团队能力',
+                        '建立AI项目管理体系，确保实施效果'
+                    ];
+                } else if (averageScore >= 1.5) {
+                    level = 'L2';
+                    levelName = '探索级';
+                    description = '您的机构正在探索AI技术的应用可能，已有初步的实践经验。';
+                    recommendations = [
+                        '制定AI应用战略规划，明确发展方向',
+                        '选择合适的AI工具，开展试点项目',
+                        '建立AI学习机制，提升认知水平',
+                        '寻求外部合作，获得专业指导'
+                    ];
+                } else {
+                    level = 'L1';
+                    levelName = '起步级';
+                    description = '您的机构对AI技术还处于认知阶段，建议从基础应用开始逐步探索。';
+                    recommendations = [
+                        '加强AI基础知识学习，提升认知水平',
+                        '从简单的AI工具开始，积累使用经验',
+                        '关注行业AI应用案例，寻找适合场景',
+                        '建立AI学习小组，营造创新氛围'
+                    ];
+                }
+
+                const resultData = {
+                    level,
+                    levelName,
+                    score: averageScore.toFixed(1),
+                    description,
+                    recommendations,
+                    answers,
+                    completedAt: new Date().toISOString()
+                };
+
+                setResult(resultData);
+                setShowResult(true);
+
+                // 保存结果
+                try {
+                    localStorage.setItem('ai-maturity-result', JSON.stringify(resultData));
+                } catch (e) {
+                    console.warn('Could not save result:', e);
+                }
+            };
+
+            const restartAssessment = () => {
+                setCurrentQuestion(0);
+                setAnswers({});
+                setShowResult(false);
+                setResult(null);
+
+                try {
+                    localStorage.removeItem('ai-maturity-session');
+                    localStorage.removeItem('ai-maturity-result');
+                } catch (e) {
+                    console.warn('Could not clear localStorage:', e);
+                }
+            };
+
+            // 加载保存的数据
+            React.useEffect(() => {
+                try {
+                    const savedSession = localStorage.getItem('ai-maturity-session');
+                    if (savedSession) {
+                        const session = JSON.parse(savedSession);
+                        if (session.answers) {
+                            setAnswers(session.answers);
+                            setCurrentQuestion(session.currentQuestion || 0);
+                        }
+                    }
+
+                    const savedResult = localStorage.getItem('ai-maturity-result');
+                    if (savedResult) {
+                        const resultData = JSON.parse(savedResult);
+                        setResult(resultData);
+                        setShowResult(true);
+                    }
+                } catch (e) {
+                    console.warn('Could not load saved data:', e);
+                }
+            }, []);
+
+            if (showResult && result) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                        <div className="max-w-2xl mx-auto">
+                            <div className="bg-white rounded-lg shadow-xl p-8">
+                                <div className="text-center mb-8">
+                                    <div className="text-6xl mb-4">{result.level}</div>
+                                    <h2 className="text-2xl font-bold text-gray-800 mb-2">{result.levelName}</h2>
+                                    <p className="text-lg text-gray-600">评估得分: {result.score}/5.0</p>
+                                </div>
+
+                                <div className="mb-8">
+                                    <h3 className="text-lg font-bold text-blue-600 mb-4">现状分析</h3>
+                                    <p className="text-gray-700 leading-relaxed">{result.description}</p>
+                                </div>
+
+                                <div className="mb-8">
+                                    <h3 className="text-lg font-bold text-blue-600 mb-4">建议行动方案</h3>
+                                    <ul className="space-y-3">
+                                        {result.recommendations.map((rec, index) => (
+                                            <li key={index} className="flex items-start">
+                                                <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                                                    <span className="text-white text-sm font-bold">{index + 1}</span>
+                                                </div>
+                                                <span className="text-gray-700">{rec}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="text-center">
+                                    <button
+                                        onClick={restartAssessment}
+                                        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors mr-4"
+                                    >
+                                        重新评估
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            const data = JSON.stringify(result, null, 2);
+                                            const blob = new Blob([data], { type: 'application/json' });
+                                            const url = URL.createObjectURL(blob);
+                                            const a = document.createElement('a');
+                                            a.href = url;
+                                            a.download = `ai-maturity-result-${new Date().toISOString().split('T')[0]}.json`;
+                                            a.click();
+                                            URL.revokeObjectURL(url);
+                                        }}
+                                        className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                                    >
+                                        导出结果
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const currentQ = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                    <div className="max-w-2xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-xl p-8">
+                            <div className="mb-6">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-sm text-gray-500">
+                                        第 {currentQuestion + 1} 题，共 {questions.length} 题
+                                    </span>
+                                    <span className="text-sm text-gray-500">
+                                        {progress.toFixed(0)}% 完成
+                                    </span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                    <div
+                                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div className="mb-4">
+                                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                                    {currentQ.dimension}
+                                </span>
+                            </div>
+
+                            <h2 className="text-xl font-bold text-gray-800 mb-6">
+                                {currentQ.question}
+                            </h2>
+
+                            <div className="space-y-3 mb-8">
+                                {currentQ.options.map((option, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleAnswer(currentQ.id, option.value)}
+                                        className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${answers[currentQ.id] === option.value
+                                                ? 'border-blue-600 bg-blue-50 text-blue-800'
+                                                : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                                            }`}
+                                    >
+                                        <div className="flex items-center">
+                                            <div className={`w-4 h-4 rounded-full border-2 mr-3 ${answers[currentQ.id] === option.value
+                                                    ? 'border-blue-600 bg-blue-600'
+                                                    : 'border-gray-300'
+                                                }`}>
+                                                {answers[currentQ.id] === option.value && (
+                                                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                                                )}
+                                            </div>
+                                            <div className="flex-1">
+                                                <span className="block">{option.text}</span>
+                                                <span className="text-xs text-gray-500 mt-1">{option.level}</span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-between">
+                                <button
+                                    onClick={prevQuestion}
+                                    disabled={currentQuestion === 0}
+                                    className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400 transition-colors"
+                                >
+                                    上一题
+                                </button>
+
+                                <button
+                                    onClick={nextQuestion}
+                                    disabled={!answers[currentQ.id]}
+                                    className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                                >
+                                    {currentQuestion === questions.length - 1 ? '查看结果' : '下一题'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // 渲染应用
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(WorkingAssessment));
+    </script>
+</body>
+
+</html>

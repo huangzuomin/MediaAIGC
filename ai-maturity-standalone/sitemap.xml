@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Main assessment page -->
+  <url>
+    <loc>https://wzxww.com/ai-maturity-standalone/</loc>
+    <lastmod>2024-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://wzxww.com/ai-maturity-standalone/assets/og-image-assessment.jpg</image:loc>
+      <image:title>媒体AI成熟度5分钟自测</image:title>
+      <image:caption>专业的媒体AI成熟度自测工具，5分钟快速评估您机构的AI应用水平</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Index.html explicit URL -->
+  <url>
+    <loc>https://wzxww.com/ai-maturity-standalone/index.html</loc>
+    <lastmod>2024-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://wzxww.com/ai-maturity-standalone/assets/og-image-assessment.jpg</image:loc>
+      <image:title>媒体AI成熟度5分钟自测</image:title>
+      <image:caption>专业的媒体AI成熟度自测工具，5分钟快速评估您机构的AI应用水平</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Static assets that should be indexed -->
+  <url>
+    <loc>https://wzxww.com/ai-maturity-standalone/assets/styles.css</loc>
+    <lastmod>2024-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Important images -->
+  <url>
+    <loc>https://wzxww.com/ai-maturity-standalone/assets/og-image-assessment.jpg</loc>
+    <lastmod>2024-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wzxww.com/ai-maturity-standalone/assets/logo.png</loc>
+    <lastmod>2024-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <!-- Robots.txt -->
+  <url>
+    <loc>https://wzxww.com/ai-maturity-standalone/robots.txt</loc>
+    <lastmod>2024-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+</urlset>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConversionCTA Test</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="test-root"></div>
+
+    <script type="text/babel">
+        // Mock result data for testing
+        const mockResult = {
+            level: 'L3',
+            levelName: '系统化应用阶段',
+            score: 3.2,
+            description: '您的机构在AI应用方面已经达到了系统化应用阶段...',
+            recommendations: [
+                '建立AI治理框架和标准化流程',
+                '扩大AI应用范围，覆盖更多业务场景',
+                '加强数据质量管理和安全保护'
+            ],
+            color: '#4CAF50'
+        };
+
+        // Mock handlers
+        const mockHandlers = {
+            onConsult: () => console.log('Consultation clicked'),
+            onLearnMore: () => console.log('Learn more clicked'),
+            onRestart: () => console.log('Restart clicked')
+        };
+
+        // Load ConversionCTA component
+        function TestApp() {
+            return React.createElement('div', { className: 'p-4' }, [
+                React.createElement('h1', { key: 'title', className: 'text-2xl font-bold mb-4' }, 'ConversionCTA Test'),
+                React.createElement('div', { key: 'mobile', className: 'mb-8' }, [
+                    React.createElement('h2', { key: 'mobile-title', className: 'text-xl font-semibold mb-2' }, 'Mobile Version'),
+                    window.ConversionCTA ? React.createElement(ConversionCTA, {
+                        key: 'mobile-cta',
+                        result: mockResult,
+                        variant: 'primary',
+                        onConsult: mockHandlers.onConsult,
+                        onLearnMore: mockHandlers.onLearnMore,
+                        onRestart: mockHandlers.onRestart,
+                        isMobile: true
+                    }) : React.createElement('p', { key: 'mobile-error' }, 'ConversionCTA not loaded')
+                ]),
+                React.createElement('div', { key: 'desktop' }, [
+                    React.createElement('h2', { key: 'desktop-title', className: 'text-xl font-semibold mb-2' }, 'Desktop Version'),
+                    window.ConversionCTA ? React.createElement(ConversionCTA, {
+                        key: 'desktop-cta',
+                        result: mockResult,
+                        variant: 'primary',
+                        onConsult: mockHandlers.onConsult,
+                        onLearnMore: mockHandlers.onLearnMore,
+                        onRestart: mockHandlers.onRestart,
+                        isMobile: false
+                    }) : React.createElement('p', { key: 'desktop-error' }, 'ConversionCTA not loaded')
+                ])
+            ]);
+        }
+
+        // Render after components are loaded
+        setTimeout(() => {
+            const root = ReactDOM.createRoot(document.getElementById('test-root'));
+            root.render(React.createElement(TestApp));
+        }, 1000);
+    </script>
+
+    <!-- Load required components -->
+    <script type="text/babel" src="utils/conversionTracking.js"></script>
+    <script type="text/babel" src="components/ConversionCTA.js"></script>
+</body>
+</html>
