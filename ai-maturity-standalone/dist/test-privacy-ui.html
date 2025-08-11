@@ -1,0 +1,133 @@
+<!doctype html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width,initial-scale=1"> <title>隐私UI测试</title> <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script> <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <script src="https://cdn.tailwindcss.com"></script> <style>:root{--primary-color:#003366;--accent-color:#FF6B35}</style> </head> <body> <div id="root"></div> <script type="text/babel" src="utils/storage.js"></script> <script type="text/babel" src="utils/privacy.js"></script> <script type="text/babel" src="components/PrivacyNotice.js"></script> <script type="text/babel"> function PrivacyTestApp() {
+            const [status, setStatus] = React.useState('初始化中...');
+
+            React.useEffect(() => {
+                console.log('PrivacyTestApp mounted');
+                
+                // 检查依赖
+                setTimeout(() => {
+                    console.log('Storage available:', typeof window.Storage);
+                    console.log('Privacy available:', typeof window.Privacy);
+                    console.log('PrivacyNotice available:', typeof window.PrivacyNotice);
+                    
+                    if (window.PrivacyNotice) {
+                        setStatus('隐私组件已加载');
+                    } else {
+                        setStatus('隐私组件加载失败');
+                    }
+                }, 1000);
+            }, []);
+
+            const testPrivacyNotice = () => {
+                console.log('Testing privacy notice...');
+                if (window.PrivacyNotice) {
+                    console.log('Showing privacy notice...');
+                    window.PrivacyNotice.show();
+                } else {
+                    console.error('PrivacyNotice not available');
+                    alert('隐私通知组件不可用');
+                }
+            };
+
+            const testPrivacySettings = () => {
+                console.log('Testing privacy settings...');
+                if (window.PrivacyNotice) {
+                    console.log('Showing privacy settings...');
+                    window.PrivacyNotice.showSettings();
+                } else {
+                    console.error('PrivacyNotice not available');
+                    alert('隐私设置组件不可用');
+                }
+            };
+
+            const testDataSummary = () => {
+                console.log('Testing data summary...');
+                if (window.PrivacyNotice) {
+                    console.log('Showing data summary...');
+                    window.PrivacyNotice.showDataSummary();
+                } else {
+                    console.error('PrivacyNotice not available');
+                    alert('数据概览组件不可用');
+                }
+            };
+
+            const checkPrivacyElements = () => {
+                const notice = document.getElementById('privacy-notice');
+                const modal = document.getElementById('privacy-modal');
+                
+                console.log('Privacy notice element:', notice);
+                console.log('Privacy modal element:', modal);
+                
+                setStatus(`通知元素: ${notice ? '存在' : '不存在'}, 模态框元素: ${modal ? '存在' : '不存在'}`);
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                    <div className="max-w-2xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-xl p-8">
+                            <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+                                隐私UI功能测试
+                            </h1>
+                            
+                            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                                <h3 className="font-semibold mb-2">状态:</h3>
+                                <p className="text-sm text-gray-600">{status}</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <button 
+                                    onClick={checkPrivacyElements}
+                                    className="w-full bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+                                >
+                                    检查隐私元素
+                                </button>
+
+                                <button 
+                                    onClick={testPrivacyNotice}
+                                    className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                                >
+                                    测试隐私通知
+                                </button>
+
+                                <button 
+                                    onClick={testPrivacySettings}
+                                    className="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+                                >
+                                    测试隐私设置
+                                </button>
+
+                                <button 
+                                    onClick={testDataSummary}
+                                    className="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+                                >
+                                    测试数据概览
+                                </button>
+
+                                <button 
+                                    onClick={() => {
+                                        if (window.Storage) {
+                                            const summary = window.Storage.getDataSummary();
+                                            console.log('Data summary:', summary);
+                                            alert('数据概览已输出到控制台');
+                                        }
+                                    }}
+                                    className="w-full bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors"
+                                >
+                                    获取数据概览
+                                </button>
+                            </div>
+
+                            <div className="mt-6 text-center">
+                                <p className="text-sm text-gray-500">
+                                    打开浏览器控制台查看详细日志
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // 渲染测试应用
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(PrivacyTestApp)); </script> </body> </html>

@@ -1,0 +1,55 @@
+{
+  "timestamp": "2025-08-03T03:50:46.262Z",
+  "performance": {
+    "tests": [
+      {
+        "name": "主页面加载",
+        "url": "http://localhost:3002",
+        "avgTime": 6,
+        "avgSize": 38978,
+        "avgFirstByte": 5,
+        "passed": true,
+        "sizeCheck": true
+      },
+      {
+        "name": "CSS文件加载",
+        "url": "http://localhost:3002/assets/styles.css",
+        "avgTime": 2,
+        "avgSize": 56683,
+        "avgFirstByte": 2,
+        "passed": true,
+        "sizeCheck": true
+      },
+      {
+        "name": "状态页面",
+        "url": "http://localhost:3002/status.html",
+        "avgTime": 1,
+        "avgSize": 6651,
+        "avgFirstByte": 1,
+        "passed": true,
+        "sizeCheck": true
+      }
+    ],
+    "summary": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "security": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "success": true
+  },
+  "load": {
+    "totalRequests": 50,
+    "totalTime": 31,
+    "avgTime": 1,
+    "requestsPerSecond": 1613,
+    "success": true
+  },
+  "overall": {
+    "success": true
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "智媒AI工作站",
+  "short_name": "智媒AI",
+  "description": "为下一代媒体打造的AI操作系统",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#003366",
+  "theme_color": "#003366",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "business", "news"],
+  "lang": "zh-CN",
+  "dir": "ltr"
+}

@@ -1,0 +1,17 @@
+{
+  "projectName": "智媒变革中心",
+  "version": "2.0.0",
+  "buildTime": "2025-08-06T23:41:06.787Z",
+  "features": [
+    "主项目网站",
+    "AI成熟度评估（10题完整版）",
+    "双向导流机制",
+    "响应式设计",
+    "SEO优化"
+  ],
+  "urls": {
+    "main": "https://your-domain.com/",
+    "assessment": "https://your-domain.com/ai-maturity-standalone/",
+    "contact": "https://your-domain.com/#contact"
+  }
+}

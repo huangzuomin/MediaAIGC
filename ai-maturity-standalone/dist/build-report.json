@@ -1,0 +1,254 @@
+{
+  "buildTime": "2025-08-03T03:42:13.397Z",
+  "version": "1.0.0",
+  "files": [
+    {
+      "path": ".htaccess",
+      "size": 1738,
+      "sizeFormatted": "1.7 KB"
+    },
+    {
+      "path": "Dockerfile",
+      "size": 216,
+      "sizeFormatted": "216 Bytes"
+    },
+    {
+      "path": "assets\\styles.css",
+      "size": 56683,
+      "sizeFormatted": "55.35 KB"
+    },
+    {
+      "path": "components\\ABTestDashboard.js",
+      "size": 36306,
+      "sizeFormatted": "35.46 KB"
+    },
+    {
+      "path": "components\\AnalyticsDashboard.js",
+      "size": 10848,
+      "sizeFormatted": "10.59 KB"
+    },
+    {
+      "path": "components\\ConversionCTA.js",
+      "size": 20292,
+      "sizeFormatted": "19.82 KB"
+    },
+    {
+      "path": "components\\LoadingAnimation.js",
+      "size": 9068,
+      "sizeFormatted": "8.86 KB"
+    },
+    {
+      "path": "components\\PrivacyNotice.js",
+      "size": 31097,
+      "sizeFormatted": "30.37 KB"
+    },
+    {
+      "path": "components\\ResultsDisplay.js",
+      "size": 21956,
+      "sizeFormatted": "21.44 KB"
+    },
+    {
+      "path": "components\\SEOHead.js",
+      "size": 16228,
+      "sizeFormatted": "15.85 KB"
+    },
+    {
+      "path": "components\\ShareModal.js",
+      "size": 18869,
+      "sizeFormatted": "18.43 KB"
+    },
+    {
+      "path": "components\\StandaloneAssessment.js",
+      "size": 59913,
+      "sizeFormatted": "58.51 KB"
+    },
+    {
+      "path": "components\\StandaloneAssessmentSimple.js",
+      "size": 21163,
+      "sizeFormatted": "20.67 KB"
+    },
+    {
+      "path": "components\\StandaloneErrorBoundary.js",
+      "size": 10889,
+      "sizeFormatted": "10.63 KB"
+    },
+    {
+      "path": "debug-simple.html",
+      "size": 4788,
+      "sizeFormatted": "4.68 KB"
+    },
+    {
+      "path": "deploy.sh",
+      "size": 1080,
+      "sizeFormatted": "1.05 KB"
+    },
+    {
+      "path": "docker-compose.yml",
+      "size": 567,
+      "sizeFormatted": "567 Bytes"
+    },
+    {
+      "path": "index-fixed-simple.html",
+      "size": 24595,
+      "sizeFormatted": "24.02 KB"
+    },
+    {
+      "path": "index-minimal.html",
+      "size": 2982,
+      "sizeFormatted": "2.91 KB"
+    },
+    {
+      "path": "index-working.html",
+      "size": 23904,
+      "sizeFormatted": "23.34 KB"
+    },
+    {
+      "path": "index.html",
+      "size": 38978,
+      "sizeFormatted": "38.06 KB"
+    },
+    {
+      "path": "nginx.conf",
+      "size": 1594,
+      "sizeFormatted": "1.56 KB"
+    },
+    {
+      "path": "status.html",
+      "size": 6651,
+      "sizeFormatted": "6.5 KB"
+    },
+    {
+      "path": "test-basic.html",
+      "size": 13742,
+      "sizeFormatted": "13.42 KB"
+    },
+    {
+      "path": "test-minimal.html",
+      "size": 6149,
+      "sizeFormatted": "6 KB"
+    },
+    {
+      "path": "test-privacy-ui.html",
+      "size": 7250,
+      "sizeFormatted": "7.08 KB"
+    },
+    {
+      "path": "utils\\abTestAnalytics.js",
+      "size": 30090,
+      "sizeFormatted": "29.38 KB"
+    },
+    {
+      "path": "utils\\abTesting.js",
+      "size": 23148,
+      "sizeFormatted": "22.61 KB"
+    },
+    {
+      "path": "utils\\accessibility.js",
+      "size": 34718,
+      "sizeFormatted": "33.9 KB"
+    },
+    {
+      "path": "utils\\analytics.js",
+      "size": 23143,
+      "sizeFormatted": "22.6 KB"
+    },
+    {
+      "path": "utils\\analyticsConfig.js",
+      "size": 10316,
+      "sizeFormatted": "10.07 KB"
+    },
+    {
+      "path": "utils\\analyticsValidator.js",
+      "size": 16016,
+      "sizeFormatted": "15.64 KB"
+    },
+    {
+      "path": "utils\\assessmentCalculator.js",
+      "size": 16794,
+      "sizeFormatted": "16.4 KB"
+    },
+    {
+      "path": "utils\\conversionTracking.js",
+      "size": 15062,
+      "sizeFormatted": "14.71 KB"
+    },
+    {
+      "path": "utils\\interactionFeedback.js",
+      "size": 17169,
+      "sizeFormatted": "16.77 KB"
+    },
+    {
+      "path": "utils\\lazyLoader.js",
+      "size": 7746,
+      "sizeFormatted": "7.56 KB"
+    },
+    {
+      "path": "utils\\loadingManager.js",
+      "size": 8825,
+      "sizeFormatted": "8.62 KB"
+    },
+    {
+      "path": "utils\\metaTags.js",
+      "size": 15393,
+      "sizeFormatted": "15.03 KB"
+    },
+    {
+      "path": "utils\\mobileOptimization.js",
+      "size": 10008,
+      "sizeFormatted": "9.77 KB"
+    },
+    {
+      "path": "utils\\networkManager.js",
+      "size": 12257,
+      "sizeFormatted": "11.97 KB"
+    },
+    {
+      "path": "utils\\performanceMonitor.js",
+      "size": 15364,
+      "sizeFormatted": "15 KB"
+    },
+    {
+      "path": "utils\\privacy.js",
+      "size": 16003,
+      "sizeFormatted": "15.63 KB"
+    },
+    {
+      "path": "utils\\resourceOptimizer.js",
+      "size": 11146,
+      "sizeFormatted": "10.88 KB"
+    },
+    {
+      "path": "utils\\seoValidator.js",
+      "size": 19299,
+      "sizeFormatted": "18.85 KB"
+    },
+    {
+      "path": "utils\\sharing.js",
+      "size": 15160,
+      "sizeFormatted": "14.8 KB"
+    },
+    {
+      "path": "utils\\sitemap.js",
+      "size": 11250,
+      "sizeFormatted": "10.99 KB"
+    },
+    {
+      "path": "utils\\socialMediaAPI.js",
+      "size": 12097,
+      "sizeFormatted": "11.81 KB"
+    },
+    {
+      "path": "utils\\storage.js",
+      "size": 21095,
+      "sizeFormatted": "20.6 KB"
+    },
+    {
+      "path": "working-with-privacy.html",
+      "size": 24721,
+      "sizeFormatted": "24.14 KB"
+    }
+  ],
+  "totalSize": 834366,
+  "totalSizeFormatted": "814.81 KB",
+  "fileCount": 49
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section 调试</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="container" id="hero-container">
+            <!-- Hero content will be rendered here -->
+        </div>
+    </section>
+
+    <script>
+        // 直接测试HeroSection组件
+        console.log('开始调试HeroSection');
+        
+        // 检查容器是否存在
+        const heroContainer = document.getElementById('hero-container');
+        console.log('Hero容器:', heroContainer);
+        
+        if (!heroContainer) {
+            console.error('Hero容器不存在！');
+        }
+        
+        // 手动创建HeroSection实例
+        class HeroSection {
+            constructor(container) {
+                this.container = container;
+                this.data = {
+                    title: "为下一代媒体打造的AI操作系统",
+                    subtitle: "集成核心AI引擎与媒体场景智能体，让您的新闻生产力即刻进入新纪元。",
+                    valueTags: [
+                        { text: "专为媒体", icon: "icon-media" },
+                        { text: "开箱即用", icon: "icon-box" },
+                        { text: "私有部署", icon: "icon-security" },
+                        { text: "流程自动化", icon: "icon-automation" }
+                    ],
+                    primaryCTA: {
+                        text: "预约产品演示",
+                        action: "demo"
+                    },
+                    secondaryCTA: {
+                        text: "查看功能概览 ↓",
+                        action: "scroll",
+                        target: "#foundation"
+                    }
+                };
+                this.init();
+            }
+
+            init() {
+                console.log('HeroSection 初始化开始');
+                this.render();
+                console.log('HeroSection 初始化完成');
+            }
+
+            render() {
+                console.log('HeroSection 开始渲染');
+                this.container.innerHTML = `
+                    <div class="hero-background">
+                        <div class="tech-lines">
+                            <div class="tech-line"></div>
+                            <div class="tech-line"></div>
+                            <div class="tech-line"></div>
+                            <div class="tech-line"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1 class="hero-title fade-in">${this.data.title}</h1>
+                            <p class="hero-subtitle fade-in">${this.data.subtitle}</p>
+                            
+                            <div class="value-bar fade-in">
+                                ${this.renderValueTags()}
+                            </div>
+                            
+                            <div class="hero-cta fade-in">
+                                <button class="btn btn-primary" data-action="${this.data.primaryCTA.action}">
+                                    ${this.data.primaryCTA.text}
+                                </button>
+                                <a href="${this.data.secondaryCTA.target}" class="btn btn-link" data-action="${this.data.secondaryCTA.action}">
+                                    ${this.data.secondaryCTA.text}
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-visual fade-in">
+                            ${this.renderDashboardMockup()}
+                        </div>
+                    </div>
+                `;
+                console.log('HeroSection 渲染完成');
+            }
+
+            renderValueTags() {
+                return this.data.valueTags.map(tag => `
+                    <div class="value-tag">
+                        <span class="value-tag-icon">✨</span>
+                        <span>${tag.text}</span>
+                    </div>
+                `).join('');
+            }
+
+            renderDashboardMockup() {
+                return `
+                    <div class="dashboard-placeholder">
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">🖥️</div>
+                            <div>智媒AI工作站</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">产品演示界面</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM加载完成，开始初始化HeroSection');
+            
+            const heroContainer = document.getElementById('hero-container');
+            if (heroContainer) {
+                console.log('找到Hero容器，创建HeroSection实例');
+                const heroSection = new HeroSection(heroContainer);
+                console.log('HeroSection实例创建完成');
+            } else {
+                console.error('未找到Hero容器！');
+            }
+        });
+    </script>
+</body>
+</html>

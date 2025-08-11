@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智媒AI工作站 - 测试版本</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .section-padding { padding: 4rem 0; }
+        .hero-section { background: linear-gradient(135deg, #003366 0%, #002244 100%); color: white; min-height: 100vh; display: flex; align-items: center; }
+        .hero-title { font-size: 3rem; font-weight: bold; margin-bottom: 1rem; }
+        .hero-subtitle { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
+        .btn { display: inline-block; padding: 1rem 2rem; background: #D4AF37; color: white; text-decoration: none; border-radius: 0.5rem; margin: 0.5rem; border: none; cursor: pointer; }
+        .btn:hover { background: #B8941F; }
+        .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 3rem; color: #003366; }
+        .challenge-section, .agents-section { background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <div>
+                    <h1 class="hero-title">为下一代媒体打造的AI操作系统</h1>
+                    <p class="hero-subtitle">集成核心AI引擎与媒体场景智能体，让您的新闻生产力即刻进入新纪元。</p>
+                    <button class="btn" onclick="alert('演示预约功能正在开发中！')">预约产品演示</button>
+                    <a href="#foundation" class="btn">查看功能概览</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="challenges" class="challenge-section section-padding">
+            <div class="container">
+                <h2 class="section-title">您的新闻团队，是否正在面临这些挑战？</h2>
+                <p style="text-align: center;">内容生产跟不上时代、重复性工作消耗精力、想用AI却不知从何下手</p>
+            </div>
+        </section>
+        
+        <section id="foundation" class="foundation-section section-padding">
+            <div class="container">
+                <h2 class="section-title">六大基座功能，构建您的媒体AI生态</h2>
+                <p style="text-align: center;">核心AI引擎管理、媒体专属知识库、成本与安全管控等</p>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        console.log('测试页面加载成功');
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM加载完成');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width,initial-scale=1"> <title>最小化测试</title> <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script> <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <script src="https://cdn.tailwindcss.com"></script> <style>:root{--primary-color:#003366;--accent-color:#FF6B35}</style> </head> <body> <div id="loading-screen" class="bg-white fixed flex inset-0 items-center justify-center z-50"> <div class="text-center"> <div class="animate-spin border-b-2 border-blue-600 h-16 mb-4 mx-auto rounded-full w-16"></div> <h2 class="font-semibold mb-2 text-blue-600 text-xl">正在测试组件加载...</h2> </div> </div> <div id="root"></div> <script type="text/babel" src="utils/storage.js"></script> <script type="text/babel" src="components/SEOHead.js"></script> <script type="text/babel" src="components/StandaloneErrorBoundary.js"></script> <script type="text/babel"> // 测试StandaloneAssessment组件是否能正常加载
+        function TestApp() {
+            const [isLoading, setIsLoading] = React.useState(true);
+            const [error, setError] = React.useState(null);
+
+            React.useEffect(() => {
+                console.log('TestApp mounted');
+                
+                // 测试各个依赖
+                console.log('Storage available:', typeof window.Storage);
+                console.log('SEOHead available:', typeof SEOHead);
+                console.log('StandaloneErrorBoundary available:', typeof StandaloneErrorBoundary);
+                
+                setTimeout(() => {
+                    console.log('Hiding loading screen...');
+                    setIsLoading(false);
+                    hideLoadingScreen();
+                }, 2000);
+            }, []);
+
+            const hideLoadingScreen = () => {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        console.log('Loading screen hidden');
+                    }, 300);
+                }
+            };
+
+            if (isLoading) {
+                return null; // Loading screen handled by HTML
+            }
+
+            return (
+                <StandaloneErrorBoundary>
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                        <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full text-center">
+                            <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                                ✅ 基础组件测试成功
+                            </h1>
+                            <p className="text-gray-600 mb-4">
+                                React和基础依赖都正常工作
+                            </p>
+                            <button 
+                                onClick={() => {
+                                    console.log('测试StandaloneAssessment组件...');
+                                    // 动态加载StandaloneAssessment
+                                    const script = document.createElement('script');
+                                    script.type = 'text/babel';
+                                    script.src = 'components/StandaloneAssessment.js';
+                                    script.onload = () => {
+                                        console.log('StandaloneAssessment loaded');
+                                        if (typeof StandaloneAssessment !== 'undefined') {
+                                            console.log('StandaloneAssessment available, rendering...');
+                                            const root = ReactDOM.createRoot(document.getElementById('root'));
+                                            root.render(React.createElement(StandaloneAssessment));
+                                        } else {
+                                            console.error('StandaloneAssessment not available after loading');
+                                        }
+                                    };
+                                    script.onerror = (e) => {
+                                        console.error('Failed to load StandaloneAssessment:', e);
+                                    };
+                                    document.head.appendChild(script);
+                                }}
+                                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                            >
+                                加载StandaloneAssessment
+                            </button>
+                        </div>
+                    </div>
+                </StandaloneErrorBoundary>
+            );
+        }
+
+        // 超时检测
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen && loadingScreen.style.display !== 'none') {
+                console.error('基础测试也超时了！');
+                loadingScreen.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-red-500 mb-4">❌</div>
+                        <h2 class="text-xl font-semibold text-red-600 mb-2">基础测试失败</h2>
+                        <p class="text-gray-600">React组件系统有问题</p>
+                    </div>
+                `;
+            }
+        }, 5000);
+
+        // 渲染测试应用
+        console.log('开始渲染测试应用...');
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(TestApp));
+        console.log('测试应用渲染完成'); </script> </body> </html>

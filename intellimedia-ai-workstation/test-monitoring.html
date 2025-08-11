@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监控系统测试页面 - 智媒AI工作站</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #003366;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        
+        .test-section h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #003366;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #004080;
+        }
+        
+        .btn-secondary {
+            background: #D4AF37;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #B8941F;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
+        .test-form {
+            margin-top: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .status-display {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .instructions {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        
+        .keyboard-shortcut {
+            background: #333;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .test-image {
+            width: 100px;
+            height: 100px;
+            background: #ddd;
+            border: 1px solid #ccc;
+            margin: 10px;
+            display: inline-block;
+        }
+        
+        .memory-hog {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>监控系统测试页面</h1>
+        
+        <div class="instructions">
+            <h3>使用说明</h3>
+            <p>此页面用于测试错误处理和监控系统的各项功能。</p>
+            <p><strong>快捷键：</strong>按 <span class="keyboard-shortcut">Ctrl + Shift + M</span> 打开/关闭监控仪表盘</p>
+            <p><strong>提示：</strong>打开浏览器开发者工具的控制台查看详细日志信息</p>
+        </div>
+        
+        <!-- 错误处理测试 -->
+        <div class="test-section">
+            <h2>错误处理测试</h2>
+            <div class="button-group">
+                <button class="btn-danger" onclick="triggerJSError()">触发JavaScript错误</button>
+                <button class="btn-danger" onclick="triggerPromiseRejection()">触发Promise拒绝</button>
+                <button class="btn-danger" onclick="triggerNetworkError()">触发网络错误</button>
+                <button class="btn-warning" onclick="triggerCustomError()">触发自定义错误</button>
+            </div>
+            <p>点击上述按钮测试不同类型的错误处理机制。</p>
+        </div>
+        
+        <!-- 资源加载错误测试 -->
+        <div class="test-section">
+            <h2>资源加载错误测试</h2>
+            <div class="button-group">
+                <button class="btn-warning" onclick="loadBrokenImage()">加载损坏图片</button>
+                <button class="btn-warning" onclick="loadBrokenScript()">加载损坏脚本</button>
+                <button class="btn-warning" onclick="loadBrokenCSS()">加载损坏样式</button>
+            </div>
+            <div id="resource-test-area">
+                <!-- 资源测试区域 -->
+            </div>
+        </div>
+        
+        <!-- 用户行为跟踪测试 -->
+        <div class="test-section">
+            <h2>用户行为跟踪测试</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="trackCustomEvent()">触发自定义事件</button>
+                <button class="btn-primary" onclick="trackConversion()">触发转化事件</button>
+                <button class="btn-secondary" onclick="showBehaviorStats()">显示行为统计</button>
+            </div>
+            
+            <form class="test-form" onsubmit="handleTestFormSubmit(event)">
+                <div class="form-group">
+                    <label for="test-name">姓名：</label>
+                    <input type="text" id="test-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="test-email">邮箱：</label>
+                    <input type="email" id="test-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="test-message">消息：</label>
+                    <textarea id="test-message" name="message" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">提交测试表单</button>
+            </form>
+        </div>
+        
+        <!-- 性能监控测试 -->
+        <div class="test-section">
+            <h2>性能监控测试</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="runPerformanceTest()">运行性能测试</button>
+                <button class="btn-primary" onclick="createMemoryLeak()">创建内存泄漏</button>
+                <button class="btn-primary" onclick="simulateSlowOperation()">模拟慢操作</button>
+                <button class="btn-secondary" onclick="showPerformanceStats()">显示性能统计</button>
+            </div>
+            <div id="performance-test-area"></div>
+        </div>
+        
+        <!-- 监控仪表盘控制 -->
+        <div class="test-section">
+            <h2>监控仪表盘控制</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="showDashboard()">显示仪表盘</button>
+                <button class="btn-secondary" onclick="hideDashboard()">隐藏仪表盘</button>
+                <button class="btn-primary" onclick="refreshDashboard()">刷新仪表盘</button>
+            </div>
+            <p>或使用快捷键 <span class="keyboard-shortcut">Ctrl + Shift + M</span> 切换仪表盘显示</p>
+        </div>
+        
+        <!-- 状态显示区域 -->
+        <div class="test-section">
+            <h2>系统状态</h2>
+            <div id="status-display" class="status-display">
+                系统监控已启动，等待测试操作...
+            </div>
+        </div>
+    </div>
+    
+    <!-- 隐藏的内存消耗元素 -->
+    <div class="memory-hog" id="memory-hog"></div>
+    
+    <!-- 监控系统脚本 -->
+    <script src="js/utils/errorHandler.js"></script>
+    <script src="js/utils/behaviorTracker.js"></script>
+    <script src="js/utils/performanceMonitor.js"></script>
+    <script src="js/components/MonitoringDashboard.js"></script>
+    
+    <!-- 测试脚本 -->
+    <script>
+        // 状态显示函数
+        function updateStatus(message) {
+            const statusDisplay = document.getElementById('status-display');
+            const timestamp = new Date().toLocaleTimeString();
+            statusDisplay.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            statusDisplay.scrollTop = statusDisplay.scrollHeight;
+        }
+        
+        // 错误处理测试函数
+        function triggerJSError() {
+            updateStatus('触发JavaScript错误...');
+            // 故意触发一个引用错误
+            nonExistentFunction();
+        }
+        
+        function triggerPromiseRejection() {
+            updateStatus('触发Promise拒绝...');
+            // 创建一个被拒绝的Promise
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject(new Error('测试Promise拒绝错误'));
+                }, 100);
+            });
+        }
+        
+        function triggerNetworkError() {
+            updateStatus('触发网络错误...');
+            // 尝试获取不存在的资源
+            fetch('/non-existent-endpoint')
+                .catch(error => {
+                    console.error('网络错误:', error);
+                });
+        }
+        
+        function triggerCustomError() {
+            updateStatus('触发自定义错误...');
+            if (window.ErrorHandler) {
+                window.ErrorHandler.logCustomError('test_error', '这是一个测试自定义错误', {
+                    testData: 'custom error test',
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+        
+        // 资源加载错误测试函数
+        function loadBrokenImage() {
+            updateStatus('加载损坏图片...');
+            const img = document.createElement('img');
+            img.src = 'non-existent-image.jpg';
+            img.alt = '测试损坏图片';
+            img.className = 'test-image';
+            document.getElementById('resource-test-area').appendChild(img);
+        }
+        
+        function loadBrokenScript() {
+            updateStatus('加载损坏脚本...');
+            const script = document.createElement('script');
+            script.src = 'non-existent-script.js';
+            document.head.appendChild(script);
+        }
+        
+        function loadBrokenCSS() {
+            updateStatus('加载损坏样式...');
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'non-existent-styles.css';
+            document.head.appendChild(link);
+        }
+        
+        // 用户行为跟踪测试函数
+        function trackCustomEvent() {
+            updateStatus('触发自定义事件...');
+            if (window.BehaviorTracker) {
+                window.BehaviorTracker.trackCustomEvent('test_button_click', {
+                    buttonType: 'custom_event_test',
+                    testData: 'user behavior test'
+                });
+            }
+        }
+        
+        function trackConversion() {
+            updateStatus('触发转化事件...');
+            if (window.BehaviorTracker) {
+                window.BehaviorTracker.trackConversion('test_conversion', 100);
+            }
+        }
+        
+        function showBehaviorStats() {
+            updateStatus('显示行为统计...');
+            if (window.BehaviorTracker) {
+                const stats = window.BehaviorTracker.getSessionStats();
+                updateStatus(`行为统计: ${JSON.stringify(stats, null, 2)}`);
+            }
+        }
+        
+        function handleTestFormSubmit(event) {
+            event.preventDefault();
+            updateStatus('测试表单提交...');
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            updateStatus(`表单数据: ${JSON.stringify(data, null, 2)}`);
+            
+            // 重置表单
+            event.target.reset();
+        }
+        
+        // 性能监控测试函数
+        function runPerformanceTest() {
+            updateStatus('运行性能测试...');
+            if (window.PerformanceMonitor) {
+                // 使用性能监控器测量一个操作
+                window.PerformanceMonitor.measurePerformance('test_operation', () => {
+                    // 模拟一些计算密集型操作
+                    let result = 0;
+                    for (let i = 0; i < 1000000; i++) {
+                        result += Math.random();
+                    }
+                    return result;
+                });
+            }
+        }
+        
+        function createMemoryLeak() {
+            updateStatus('创建内存泄漏...');
+            const memoryHog = document.getElementById('memory-hog');
+            
+            // 创建大量DOM元素来消耗内存
+            for (let i = 0; i < 10000; i++) {
+                const div = document.createElement('div');
+                div.innerHTML = `内存消耗元素 ${i} - ${'x'.repeat(100)}`;
+                memoryHog.appendChild(div);
+            }
+            
+            updateStatus('已创建10000个DOM元素消耗内存');
+        }
+        
+        function simulateSlowOperation() {
+            updateStatus('模拟慢操作...');
+            
+            // 模拟一个阻塞主线程的操作
+            const startTime = Date.now();
+            while (Date.now() - startTime < 2000) {
+                // 阻塞2秒
+            }
+            
+            updateStatus('慢操作完成（阻塞了2秒）');
+        }
+        
+        function showPerformanceStats() {
+            updateStatus('显示性能统计...');
+            if (window.PerformanceMonitor) {
+                const summary = window.PerformanceMonitor.getPerformanceSummary();
+                updateStatus(`性能统计: ${JSON.stringify(summary, null, 2)}`);
+            }
+        }
+        
+        // 监控仪表盘控制函数
+        function showDashboard() {
+            updateStatus('显示监控仪表盘...');
+            if (window.MonitoringDashboard) {
+                window.MonitoringDashboard.show();
+            }
+        }
+        
+        function hideDashboard() {
+            updateStatus('隐藏监控仪表盘...');
+            if (window.MonitoringDashboard) {
+                window.MonitoringDashboard.hide();
+            }
+        }
+        
+        function refreshDashboard() {
+            updateStatus('刷新监控仪表盘...');
+            if (window.MonitoringDashboard) {
+                window.MonitoringDashboard.refresh();
+            }
+        }
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStatus('监控系统测试页面已加载');
+            updateStatus('错误处理系统状态: ' + (window.ErrorHandler ? '已启动' : '未启动'));
+            updateStatus('行为跟踪系统状态: ' + (window.BehaviorTracker ? '已启动' : '未启动'));
+            updateStatus('性能监控系统状态: ' + (window.PerformanceMonitor ? '已启动' : '未启动'));
+            updateStatus('监控仪表盘状态: ' + (window.MonitoringDashboard ? '已启动' : '未启动'));
+            updateStatus('使用 Ctrl + Shift + M 打开监控仪表盘');
+        });
+        
+        // 监听系统事件
+        document.addEventListener('conversionTracked', (event) => {
+            updateStatus(`转化事件: ${event.detail.eventType}`);
+        });
+        
+        // 定期更新状态
+        setInterval(() => {
+            if (window.ErrorHandler) {
+                const errorStats = window.ErrorHandler.getErrorStats();
+                if (errorStats.queueLength > 0) {
+                    updateStatus(`错误队列长度: ${errorStats.queueLength}`);
+                }
+            }
+        }, 10000);
+    </script>
+</body>
+</html>

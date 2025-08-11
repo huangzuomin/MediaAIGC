@@ -1,0 +1,99 @@
+{
+  "name": "intellimedia-ai-workstation",
+  "version": "1.0.0",
+  "description": "智媒AI工作站 - 为下一代媒体打造的AI操作系统",
+  "main": "js/app.js",
+  "scripts": {
+    "dev": "http-server -p 3000 -c-1",
+    "build": "node scripts/build-production.js",
+    "build:dev": "NODE_ENV=development node scripts/build-production.js",
+    "deploy": "node scripts/deploy.js",
+    "deploy:dev": "node scripts/deploy.js development",
+    "deploy:staging": "node scripts/deploy.js staging",
+    "deploy:production": "node scripts/deploy.js production",
+    "test": "node test-runner.html",
+    "test:unit": "echo 'Running unit tests...'",
+    "test:e2e": "echo 'Running e2e tests...'",
+    "test:performance": "echo 'Running performance tests...'",
+    "test:accessibility": "echo 'Running accessibility tests...'",
+    "test:seo": "echo 'Running SEO tests...'",
+    "test:all": "npm run test:unit && npm run test:e2e && npm run test:performance && npm run test:accessibility && npm run test:seo",
+    "lint": "eslint js/**/*.js",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "format": "prettier --write \"**/*.{js,css,html,md}\"",
+    "validate": "npm run lint && npm run test:all",
+    "clean": "rm -rf dist temp node_modules/.cache",
+    "serve": "http-server dist -p 8080",
+    "analyze": "echo 'Bundle analysis would run here'",
+    "optimize": "npm run optimize:images && npm run optimize:css && npm run optimize:js",
+    "optimize:images": "echo 'Image optimization would run here'",
+    "optimize:css": "echo 'CSS optimization would run here'",
+    "optimize:js": "echo 'JavaScript optimization would run here'",
+    "security:audit": "npm audit",
+    "security:fix": "npm audit fix",
+    "security:scan": "echo 'Security scan would run here'",
+    "backup": "echo 'Backup would run here'",
+    "restore": "echo 'Restore would run here'",
+    "health-check": "curl -f http://localhost:3000/health || exit 1",
+    "monitor": "echo 'Monitoring dashboard would open here'",
+    "logs": "tail -f /var/log/nginx/access.log",
+    "status": "systemctl status nginx",
+    "restart": "systemctl restart nginx",
+    "rollback": "echo 'Rollback would run here'",
+    "docs:build": "echo 'Documentation build would run here'",
+    "docs:serve": "echo 'Documentation server would start here'",
+    "release": "npm run validate && npm run build && npm run deploy:production",
+    "precommit": "npm run lint && npm run test:unit",
+    "prepush": "npm run test:all",
+    "postinstall": "echo 'Post-install setup complete'"
+  },
+  "keywords": [
+    "AI",
+    "媒体",
+    "新闻生产",
+    "智能体",
+    "工作站",
+    "人工智能",
+    "媒体科技",
+    "新闻自动化"
+  ],
+  "author": {
+    "name": "智媒AI工作站团队",
+    "email": "team@intellimedia-ai-workstation.com",
+    "url": "https://intellimedia-ai-workstation.com"
+  },
+  "license": "MIT",
+  "homepage": "https://intellimedia-ai-workstation.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/intellimedia-ai-workstation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/intellimedia-ai-workstation/issues",
+    "email": "support@intellimedia-ai-workstation.com"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^2.8.0",
+    "http-server": "^14.1.0"
+  },
+  "dependencies": {},
+  "config": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://intellimedia-ai-workstation.com/sponsor"
+  }
+}

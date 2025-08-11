@@ -1,0 +1,53 @@
+<!doctype html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width,initial-scale=1"> <title>媒体AI成熟度5分钟自测 | 免费评估您的AI转型水平</title> <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script> <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <script src="https://cdn.tailwindcss.com"></script> <link rel="stylesheet" href="assets/styles.css"> </head> <body class="smooth-scroll"> <div id="loading-screen" class="bg-white fixed flex inset-0 items-center justify-center z-50"> <div class="text-center"> <div class="animate-spin border-4 border-primary-color border-t-transparent h-16 mb-4 mx-auto rounded-full w-16"></div> <p class="font-medium text-primary-color">正在加载AI成熟度自测...</p> </div> </div> <div id="root"></div> <script type="text/babel" src="components/StandaloneAssessmentSimple.js"></script> <script type="text/babel"> // Minimal Standalone App
+        function MinimalApp() {
+          const [isLoading, setIsLoading] = React.useState(true);
+
+          React.useEffect(() => {
+            console.log('Initializing minimal app...');
+            
+            setTimeout(() => {
+              console.log('Hiding loading screen...');
+              setIsLoading(false);
+              
+              const loadingScreen = document.getElementById('loading-screen');
+              if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                  loadingScreen.style.display = 'none';
+                }, 300);
+              }
+            }, 1000);
+          }, []);
+
+          if (isLoading) {
+            return null; // Loading screen is handled by HTML
+          }
+
+          return React.createElement(StandaloneAssessment);
+        }
+
+        // Initialize React app
+        document.addEventListener('DOMContentLoaded', function() {
+          console.log('DOM loaded, initializing React app...');
+          const root = document.getElementById('root');
+          if (root) {
+            if (ReactDOM.createRoot) {
+              const reactRoot = ReactDOM.createRoot(root);
+              reactRoot.render(React.createElement(MinimalApp));
+            } else {
+              ReactDOM.render(React.createElement(MinimalApp), root);
+            }
+            console.log('React app initialized');
+          } else {
+            console.error('Root element not found');
+          }
+        });
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+          console.error('Global error:', e.message, e.filename, e.lineno);
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+          console.error('Unhandled promise rejection:', e.reason);
+        }); </script> </body> </html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智媒AI工作站 - 为下一代媒体打造的AI操作系统</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <!-- Skip Links for Accessibility -->
+    <div class="skip-links" aria-label="跳转链接">
+        <a href="#main-content" class="skip-link">跳转到主要内容</a>
+        <a href="#hero" class="skip-link">跳转到首页</a>
+        <a href="#challenges" class="skip-link">跳转到挑战介绍</a>
+        <a href="#foundation" class="skip-link">跳转到基础功能</a>
+    </div>
+
+    <!-- Page Container -->
+    <main id="main-content" class="page-container" role="main" aria-label="智媒AI工作站主要内容">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section" role="banner" aria-labelledby="hero-title">
+            <div class="container" id="hero-container">
+                <!-- Hero content will be rendered here by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Challenge Section -->
+        <section id="challenges" class="challenge-section" role="region" aria-labelledby="challenges-title">
+            <div class="container" id="challenge-container">
+                <!-- Challenge content will be rendered here by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Foundation Section -->
+        <section id="foundation" class="foundation-section" role="region" aria-labelledby="foundation-title">
+            <div class="container" id="foundation-container">
+                <!-- Foundation content will be rendered here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ARIA Live Regions for Screen Reader Announcements -->
+    <div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+    <div id="aria-assertive-region" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+    
+    <!-- Scripts - 按正确顺序加载 -->
+    <script>
+        // 工具函数库
+        const Utils = {
+            smoothScrollTo(selector, offset = 0) {
+                const element = document.querySelector(selector);
+                if (element) {
+                    const targetPosition = element.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        };
+        
+        // 导出到全局
+        window.Utils = Utils;
+    </script>
+    
+    <!-- 组件脚本 -->
+    <script src="js/components/HeroSection.js"></script>
+    <script src="js/components/ChallengeSection.js"></script>
+    <script src="js/components/FoundationSection.js"></script>
+    
+    <!-- 主应用脚本 -->
+    <script>
+        // 简化的应用初始化
+        class SimpleApp {
+            constructor() {
+                this.components = new Map();
+                this.init();
+            }
+
+            init() {
+                console.log('应用程序开始初始化');
+                this.initializeComponents();
+                console.log('应用程序初始化完成');
+            }
+
+            initializeComponents() {
+                // 初始化Hero Section
+                const heroContainer = document.getElementById('hero-container');
+                if (heroContainer && window.HeroSection) {
+                    console.log('初始化HeroSection');
+                    const heroSection = new window.HeroSection(heroContainer);
+                    this.components.set('heroSection', heroSection);
+                } else {
+                    console.error('HeroSection初始化失败:', {
+                        container: !!heroContainer,
+                        component: !!window.HeroSection
+                    });
+                }
+
+                // 初始化Challenge Section
+                const challengeContainer = document.getElementById('challenge-container');
+                if (challengeContainer && window.ChallengeSection) {
+                    console.log('初始化ChallengeSection');
+                    const challengeSection = new window.ChallengeSection(challengeContainer);
+                    this.components.set('challengeSection', challengeSection);
+                }
+
+                // 初始化Foundation Section
+                const foundationContainer = document.getElementById('foundation-container');
+                if (foundationContainer && window.FoundationSection) {
+                    console.log('初始化FoundationSection');
+                    const foundationSection = new window.FoundationSection(foundationContainer);
+                    this.components.set('foundationSection', foundationSection);
+                }
+            }
+        }
+
+        // 页面加载完成后初始化应用
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM加载完成，开始初始化应用');
+            window.app = new SimpleApp();
+        });
+    </script>
+</body>
+</html>
